@@ -26,6 +26,7 @@ var MediaQueries = (function(mq, window, document, undefined){
 	};
 
 	// Native test
+	// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc.
 	mq.test_native = function(query){
 		var head = document.getElementsByTagName('head')[0],
 				body = document.getElementsByTagName('body')[0],
