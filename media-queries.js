@@ -2,7 +2,7 @@ var MediaQueries = (function(mq, window, document, undefined){
 
 	// Metadata
 	mq.type = 'library';
-	mq.name = 'CSS3 Media Queries Library';
+	mq.name = 'media-queries';
 	mq.major_version = 0;
 	mq.minor_version = 0;
 	mq.patch_version = 1;
