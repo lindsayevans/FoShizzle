@@ -175,8 +175,8 @@
 			return test_feature_map[media_feature].call(this, prefix, expr);
 		},
 
-		test_width_feature = function(p, e){
-			var v = parseInt(e), t = window.innerWidth;
+		test_number = function(p, e, t){
+			var v = parseInt(e);
 			if(t === undefined) return false;
 			if(isNaN(v)) return true;
 			switch(p){
@@ -186,46 +186,22 @@
 					return t <= v;
 			}
 			return t === v;
+		},
+
+		test_width_feature = function(p, e){
+			return test_number(p, e, window.innerWidth);
 		},
 
 		test_height_feature = function(p, e){
-			var v = parseInt(e), t = window.innerHeight;
-			if(t === undefined) return false;
-			if(isNaN(v)) return true;
-			switch(p){
-				case 'min':
-					return t >= v;
-				case 'max':
-					return t <= v;
-			}
-			return t === v;
+			return test_number(p, e, window.innerHeight);
 		},
 
-
 		test_device_width_feature = function(p, e){
-			var v = parseInt(e), t = screen.width;
-			if(t === undefined) return false;
-			if(isNaN(v)) return true;
-			switch(p){
-				case 'min':
-					return t >= v;
-				case 'max':
-					return t <= v;
-			}
-			return t === v;
+			return test_number(p, e, screen.width);
 		},
 
 		test_device_height_feature = function(p, e){
-			var v = parseInt(e), t = screen.height;
-			if(t === undefined) return false;
-			if(isNaN(v)) return true;
-			switch(p){
-				case 'min':
-					return t >= v;
-				case 'max':
-					return t <= v;
-			}
-			return t === v;
+			return test_number(p, e, screen.height);
 		},
 
 		test_feature_map = {
