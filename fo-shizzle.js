@@ -22,6 +22,8 @@
 
 
 	// Public properties
+	FoShizzle.debug = false;
+
 	FoShizzle.native_support;
 
 	FoShizzle.native_test_query = '(min-width: 0), not screen';
@@ -52,18 +54,22 @@
 		while((m_mql = r_media_query_list.exec(q)) !== null){
 
 			// Media query
+			mq = null;
 			r_media_query.lastIndex = 0;
-			// TODO: multiple ands
-			if((m_mq = r_media_query.exec(m_mql[1])) !== null){
-				mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expression: m_mq[3] || null};
+			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
+				if(m_mq[0] === '' && m_mq[3] === undefined) break;
+				if(m_mq[2] !== 'and'){
+					mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expressions: []};
+				}
 
 				// Expression
 				r_expression.lastIndex = 0;
 				if(m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null){
-					mq.expression = {prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null};
+					mq.expressions.push({prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null});
 				}
-				pq.push(mq);
+
 			}
+			pq.push(mq);
 		}
 
 		return pq;
@@ -72,7 +78,11 @@
 
 	// Private functions
 	var
-	
+
+		log = function(m){
+			if(FoShizzle.debug && console.log) console.log(m);
+		},
+
 		// Native test
 		// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc. (would anything that supports MQ NOT support these?)
 		test_native = function(query){
