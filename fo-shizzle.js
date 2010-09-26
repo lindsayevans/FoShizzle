@@ -4,7 +4,7 @@
  * Copyright (c) 2010 Lindsay Evans <http://linz.id.au/>
  * Licensed under the MIT <http://www.opensource.org/licenses/mit-license.php)> license.
  */
-(function(window, document, undefined){
+(function(window, document, screen, undefined){
 
 	var FoShizzle = function(q){
 		return FoShizzle.test(q);
@@ -254,4 +254,4 @@
 	// Expose in globals
 	window.FoShizzle = window.$fs = FoShizzle;
 
-})(window || this, document || {});
+})(window || this, document || {}, screen || {});
