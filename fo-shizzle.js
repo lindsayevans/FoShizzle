@@ -24,7 +24,6 @@
 	// Public properties
 	// TODO:
 	// - events?
-	// - make extendable - e.g. add_feature(name, f){test_feature_map[name] = f}
 	FoShizzle.debug = false;
 	FoShizzle.native_support;
 	FoShizzle.native_test_query = 'only screen, not screen';
@@ -67,6 +66,19 @@
 		return FoShizzle;
 	};
 
+	// Extensibility - add/replace media feature
+	FoShizzle.add_feature = function(name, f){
+		// Add name to feature RegExp if not exist
+		if(test_feature_map[name] === undefined){
+			var s = r_media_feature.source.split('('),
+					m = r_media_feature.global ? 'g' : '';
+			m += r_media_feature.ignoreCase ? 'i' : ''
+			r_media_feature.compile(s[0] + '(' + name + '|' + s[1], m);
+		}
+		// Add feature test function to map
+		test_feature_map[name] = f;
+		return FoShizzle;
+	};
 
 	// Parses the query
 	// TODO:
@@ -234,7 +246,7 @@
 			'grid': test_feature_unimplemented
 		},
 
-		query_parser_cache = {};
+		query_parser_cache = {},
 
 		test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
 
