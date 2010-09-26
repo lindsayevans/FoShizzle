@@ -152,7 +152,7 @@
 				if(type_pass){
 					// Check expressions
 					feature_pass = true;
-					for(var ii = 0; i < pq[i].expressions.length; ii++){
+					for(var ii = 0; ii < pq[i].expressions.length; ii++){
 						feature_pass = feature_pass && test_media_feature(pq[i].expressions[ii].prefix, pq[i].expressions[ii].media_feature, pq[i].expressions[ii].expr);
 					}
 					query_pass = feature_pass;
@@ -166,6 +166,7 @@
 		// Test if the device supports the specified media type
 		// TODO: do it
 		test_media_type = function(media_type){
+			if(media_type === null || media_type === 'all') return true;
 			return media_type === 'screen';
 		},
 

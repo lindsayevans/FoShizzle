@@ -92,8 +92,8 @@ test('Malformed queries', function(){
 
 module('FoShizzle test_non_native');
 test('Media types', function(){
-	FoShizzle.debug = true;
 	FoShizzle.native_support = false;
+	ok(FoShizzle('all'), 'all');
 	ok(FoShizzle('screen'), 'screen');
 	ok(!FoShizzle('aural'), 'aural');
 	ok(FoShizzle('only screen'), 'only screen');
