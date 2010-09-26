@@ -17,18 +17,23 @@
 	<script src="qunit.js"></script>
 	<script src="../fo-shizzle.js"></script>
 	<script>
-test('Testing basic support', function(){
+
+
+module('FoShizzle()');
+test('Basic support', function(){
 	equals(FoShizzle('(min-width:0)'), true, '(min-width:0)');
 	equals(FoShizzle('not (min-width:0)'), false, 'not (min-width:0)');
 	equals(FoShizzle('(min-width:50000px)'), false, '(min-width:50000px)');
 });
 
-test('Testing non-native support', function(){
-	FoShizzle.native_support = false;
-	equals(FoShizzle('(min-width:0)'), true, '(min-width:0)');
-	equals(FoShizzle('not (min-width:0)'), false, 'not (min-width:0)');
-	equals(FoShizzle('(min-width:50000px)'), false, '(min-width:50000px)');
+module('FoShizzle.parse()');
+test('Expression support', function(){
+	same(FoShizzle.parse('(width)'), [{"query":"(width)","keyword":null,"media_type":null,"expression":{"prefix":null,"media_feature":"width","expr":null}}], '(width)');
+	same(FoShizzle.parse('(width:0)'), [{"query":"(width:0)","keyword":null,"media_type":null,"expression":{"prefix":null,"media_feature":"width","expr":"0"}}], '(width:0)');
+	same(FoShizzle.parse('(min-width:0)'), [{"query":"(min-width:0)","keyword":null,"media_type":null,"expression":{"prefix":"min","media_feature":"width","expr":"0"}}], '(max-width:0)');
+	same(FoShizzle.parse('(max-width:0)'), [{"query":"(max-width:0)","keyword":null,"media_type":null,"expression":{"prefix":"max","media_feature":"width","expr":"0"}}], '(min-width:0)');
 });
+
 	</script>
 
 </body>

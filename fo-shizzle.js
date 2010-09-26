@@ -40,35 +40,71 @@
 		return (FoShizzle.check_native_support() ? test_native : test_non_native)(q);
 	};
 
-	// Private functions
-	
-	// Native test
-	// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc. (would anything that supports MQ NOT support these?)
-	var test_native = function(query){
-		var head = document.getElementsByTagName('head')[0],
-				body = document.getElementsByTagName('body')[0],
-				style = document.createElement('style'),
-				test = document.createElement('div'),
-				style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }'
-				applied = false;
 
-		style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
-		style.innerHTML = style_content;
-		head.appendChild(style);
+	// Parses the query
+	// TODO: handle malformed queries
+	FoShizzle.parse = function(q){
 
-		test.setAttribute('id', FoShizzle.test_id_prefix + 'test');
-		body.appendChild(test);
+		var pq = [], mq, m_mql, m_mq, m_e;
 
-		applied = test.clientHeight === 10;
+		// Media query list
+		r_media_query_list.lastIndex = 0;
+		while((m_mql = r_media_query_list.exec(q)) !== null){
 
-		head.removeChild(style);
-		body.removeChild(test);
+			// Media query
+			r_media_query.lastIndex = 0;
+			if((m_mq = r_media_query.exec(m_mql[1])) !== null){
+				mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expression: m_mq[3] || null};
 
-		return applied;
+				// Expression
+				r_expression.lastIndex = 0;
+				if(m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null){
+					mq.expression = {prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null};
+				}
+				pq.push(mq);
+			}
+		}
+
+		return pq;
 
 	};
 
+	// Private functions
 	var
+	
+		// Native test
+		// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc. (would anything that supports MQ NOT support these?)
+		test_native = function(query){
+			var head = document.getElementsByTagName('head')[0],
+					body = document.getElementsByTagName('body')[0],
+					style = document.createElement('style'),
+					test = document.createElement('div'),
+					style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }'
+					applied = false;
+
+			style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
+			style.innerHTML = style_content;
+			head.appendChild(style);
+
+			test.setAttribute('id', FoShizzle.test_id_prefix + 'test');
+			body.appendChild(test);
+
+			applied = test.clientHeight === 10;
+
+			head.removeChild(style);
+			body.removeChild(test);
+
+			return applied;
+
+		},
+
+		// Non-native test
+		// TODO: everything
+		test_non_native = function(q){
+
+			return false;
+		},
+
 
 		test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
 
@@ -77,19 +113,12 @@
 		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(\([^\)]+\))?/gi,
 		//r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(?:(?:\()([^\)]+)(?:\)))?/gi, // don't capture parens around expression
 		r_media_type = /(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)/gi, // CSS2 media types
-		r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // TODO: capture min & max prefixes here?
+		//r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // doesn't capture min & max prefixes
+		r_expression = /\(\s*(?:(min|max)-)?([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g,
 		r_media_feature = /(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)/gi
 
+
 	;
-
-	// Non-native test
-	// TODO: everything
-	var test_non_native = function(q){
-
-		// TODO: Parse query
-
-		return false;
-	};
 
 
 	// Expose in globals
