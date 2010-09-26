@@ -108,12 +108,36 @@ module('FoShizzle test_non_native');
 test('Media features', function(){
 	FoShizzle.debug = true;
 	FoShizzle.native_support = false;
+
 	ok(FoShizzle('(width)'), '(width)');
-	ok(FoShizzle('(width:0)'), '(width:0)');
+	ok(!FoShizzle('(width:0)'), '(width:0)');
 	ok(FoShizzle('(min-width)'), '(min-width)');
 	ok(FoShizzle('(min-width:0)'), '(min-width:0)');
 	ok(FoShizzle('(max-width)'), '(max-width)');
-	ok(FoShizzle('(max-width:0)'), '(max-width:0)');
+	ok(FoShizzle('(max-width:9000px)'), '(max-width:9000px)');
+
+	ok(FoShizzle('(height)'), '(height)');
+	ok(!FoShizzle('(height:0)'), '(height:0)');
+	ok(FoShizzle('(min-height)'), '(min-height)');
+	ok(FoShizzle('(min-height:0)'), '(min-height:0)');
+	ok(FoShizzle('(max-height)'), '(max-height)');
+	ok(FoShizzle('(max-height:9000px)'), '(max-height:9000px)');
+
+
+	ok(FoShizzle('(device-width)'), '(device-width)');
+	ok(!FoShizzle('(device-width:0)'), '(device-width:0)');
+	ok(FoShizzle('(min-device-width)'), '(min-device-width)');
+	ok(FoShizzle('(min-device-width:0)'), '(min-width:0)');
+	ok(FoShizzle('(max-device-width)'), '(max-device-width)');
+	ok(FoShizzle('(max-device-width:9000px)'), '(max-device-width:9000px)');
+
+	ok(FoShizzle('(device-height)'), '(device-height)');
+	ok(!FoShizzle('(device-height:0)'), '(device-height:0)');
+	ok(FoShizzle('(min-device-height)'), '(min-device-height)');
+	ok(FoShizzle('(min-device-height:0)'), '(min-device-height:0)');
+	ok(FoShizzle('(max-device-height)'), '(max-device-height)');
+	ok(FoShizzle('(max-device-height:9000px)'), '(max-device-height:9000px)');
+
 });
 
 

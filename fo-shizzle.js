@@ -171,9 +171,68 @@
 		},
 
 		// Test if the device supports the specified media feature
-		// TODO: do it
-		test_media_feature = function(prefix, media_feature, expr){
-			return media_feature === 'width';
+		test_media_feature = function(prefix, media_feature, expr){			
+			return test_feature_map[media_feature].call(this, prefix, expr);
+		},
+
+		test_width_feature = function(p, e){
+			var v = parseInt(e), t = window.innerWidth;
+			if(t === undefined) return false;
+			if(isNaN(v)) return true;
+			switch(p){
+				case 'min':
+					return t >= v;
+				case 'max':
+					return t <= v;
+			}
+			return t === v;
+		},
+
+		test_height_feature = function(p, e){
+			var v = parseInt(e), t = window.innerHeight;
+			if(t === undefined) return false;
+			if(isNaN(v)) return true;
+			switch(p){
+				case 'min':
+					return t >= v;
+				case 'max':
+					return t <= v;
+			}
+			return t === v;
+		},
+
+
+		test_device_width_feature = function(p, e){
+			var v = parseInt(e), t = screen.width;
+			if(t === undefined) return false;
+			if(isNaN(v)) return true;
+			switch(p){
+				case 'min':
+					return t >= v;
+				case 'max':
+					return t <= v;
+			}
+			return t === v;
+		},
+
+		test_device_height_feature = function(p, e){
+			var v = parseInt(e), t = screen.height;
+			if(t === undefined) return false;
+			if(isNaN(v)) return true;
+			switch(p){
+				case 'min':
+					return t >= v;
+				case 'max':
+					return t <= v;
+			}
+			return t === v;
+		},
+
+		test_feature_map = {
+			'width': test_width_feature,
+			'height': test_height_feature,
+			'device-width': test_device_width_feature,
+			'device-height': test_device_height_feature
 		},
 
 		query_parser_cache = {};
