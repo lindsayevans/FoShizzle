@@ -81,7 +81,6 @@
 			mq = null;
 			r_media_query.lastIndex = 0;
 			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
-log(m_mq);
 				if(m_mq[0] === '' && m_mq[3] === undefined) break;
 				if(m_mq[2] !== 'and'){
 					r_media_type.lastIndex = 0;
@@ -140,12 +139,40 @@ log(m_mq);
 		},
 
 		// Non-native test
-		// TODO: everything
 		test_non_native = function(q){
 
-			var pq = FoShizzle.parse(q);
+			var pq = FoShizzle.parse(q),
+					pass = false,
+					query_pass,
+					type_pass, feature_pass;
 
-			return false;
+			for(var i = 0; i < pq.length; i++){
+				// Check media type
+				query_pass = type_pass = test_media_type(pq[i].media_type);
+				if(type_pass){
+					// Check expressions
+					feature_pass = true;
+					for(var ii = 0; i < pq[i].expressions.length; ii++){
+						feature_pass = feature_pass && test_media_feature(pq[i].expressions[ii].prefix, pq[i].expressions[ii].media_feature, pq[i].expressions[ii].expr);
+					}
+					query_pass = feature_pass;
+				}
+				pass = pass || (pq[i].keyword === 'not') ? !query_pass : query_pass
+			}
+
+			return pass;
+		},
+
+		// Test if the device supports the specified media type
+		// TODO: do it
+		test_media_type = function(media_type){
+			return media_type === 'screen';
+		},
+
+		// Test if the device supports the specified media feature
+		// TODO: do it
+		test_media_feature = function(prefix, media_feature, expr){
+			return media_feature === 'width';
 		},
 
 		query_parser_cache = {};

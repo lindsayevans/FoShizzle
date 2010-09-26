@@ -89,6 +89,18 @@ test('Malformed queries', function(){
 
 });
 */
+
+module('FoShizzle test_non_native');
+test('Basic', function(){
+	FoShizzle.debug = true;
+	FoShizzle.native_support = false;
+	ok(FoShizzle('screen'), 'screen');
+	ok(FoShizzle('only screen'), 'only screen');
+	ok(!FoShizzle('not screen'), '!not screen');
+	ok(!FoShizzle('aural'), '!aural');
+	ok(FoShizzle('not aural'), 'not aural');
+});
+
 	</script>
 
 </body>
