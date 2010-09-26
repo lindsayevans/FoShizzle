@@ -18,21 +18,24 @@
 	// Public properties
 	FoShizzle.native_support;
 
+
 	// Public methods
 
 	// Check if the device suports native media queries
 	FoShizzle.check_native_support = function(){
-		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = FoShizzle.test_native('(min-width: 0px)')) : FoShizzle.native_support;
+		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = test_native('(min-width: 0px)')) : FoShizzle.native_support;
 	};
 
 	// Test if the supplied media query would be applied
-	FoShizzle.test = function(query){
-		return FoShizzle.check_native_support() ? FoShizzle.test_native(query) : FoShizzle.test_non_native(query);
+	FoShizzle.test = function(q){
+		return (FoShizzle.check_native_support() ? test_native : test_non_native)(q);
 	};
 
+	// Private functions
+	
 	// Native test
 	// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc.
-	FoShizzle.test_native = function(query){
+	var test_native = function(query){
 		var head = document.getElementsByTagName('head')[0],
 				body = document.getElementsByTagName('body')[0],
 				style = document.createElement('style'),
@@ -58,12 +61,12 @@
 
 	// Non-native test
 	// TODO: everything
-	FoShizzle.test_non_native = function(query){
+	var test_non_native = function(query){
 		return false;
 	};
 
 
-	// Assign self to globals & return
-	return (window.FoShizzle = window.$fs = FoShizzle);
+	// Expose in globals
+	window.FoShizzle = window.$fs = FoShizzle;
 
 })(window, document);
