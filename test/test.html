@@ -56,12 +56,26 @@ test('Unsupported types & features', function(){
 	same(FoShizzle.parse('(foo)'), [{"query":"(foo)","keyword":null,"media_type":null,"expressions":[]}], '(foo)');
 
 	FoShizzle.ignore_unsupported_media_types = false;
+	FoShizzle.clear_cache('tv-3d');
 	same(FoShizzle.parse('tv-3d'), [{"query":"tv-3d","keyword":null,"media_type":"tv-3d","expressions":[]}], 'tv-3d');
 	FoShizzle.ignore_unsupported_media_types = true;
 
 	FoShizzle.ignore_unsupported_media_features = false;
+	FoShizzle.clear_cache('(foo)');
 	same(FoShizzle.parse('(foo)'), [{"query":"(foo)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"foo","expr":null}]}], '(foo)');
 	FoShizzle.ignore_unsupported_media_features = true;
+
+});
+
+test('Parser caching', function(){
+	same(FoShizzle.is_cached('cache'), false, 'not in cache');
+	FoShizzle.parse('cache')
+	same(FoShizzle.is_cached('cache'), true, 'in cache');
+	FoShizzle.clear_cache('cache');
+	same(FoShizzle.is_cached('cache'), false, 'not in cache after clearing query from cache');
+	FoShizzle.parse('cache')
+	FoShizzle.clear_cache();
+	same(FoShizzle.is_cached('cache'), false, 'not in cache after clearing entire cache');
 
 });
 

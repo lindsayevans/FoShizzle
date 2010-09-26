@@ -22,7 +22,9 @@
 
 
 	// Public properties
-	// TODO: add convenience chaining methods for setting properties & returning self
+	// TODO:
+	// - add convenience chaining methods for setting properties & returning self
+	// - events?
 	FoShizzle.debug = false;
 	FoShizzle.native_support;
 	FoShizzle.native_test_query = '(min-width: 0), not screen';
@@ -42,13 +44,34 @@
 		return (FoShizzle.check_native_support() ? test_native : test_non_native)(q);
 	};
 
+	// Check if a query is in the cache
+	FoShizzle.is_cached = function(q){
+		return query_parser_cache[q.toLowerCase()] !== undefined;
+	};
+
+	// Clears the query cache
+	FoShizzle.clear_cache = function(q){
+		if(q !== undefined){
+			q = q.toLowerCase();
+			query_parser_cache[q.toLowerCase()] = undefined;
+		}else{
+			query_parser_cache = {};
+		}
+		
+		return FoShizzle;
+	};
+
 
 	// Parses the query
 	// TODO:
 	// - handle malformed queries
 	FoShizzle.parse = function(q){
 
-		var pq = [], mq, m_mql, m_mq, m_e;
+		var q = q.toLowerCase(), pq = [], mq, m_mql, m_mq, m_e;
+
+		if(FoShizzle.is_cached(q)){
+			return query_parser_cache[q];
+		}
 
 		// Media query list
 		r_media_query_list.lastIndex = 0;
@@ -78,7 +101,7 @@
 			if(mq !== null) pq.push(mq);
 		}
 
-		return pq;
+		return query_parser_cache[q] = pq;
 
 	};
 
@@ -119,9 +142,12 @@
 		// TODO: everything
 		test_non_native = function(q){
 
+			var pq = FoShizzle.parse(q);
+
 			return false;
 		},
 
+		query_parser_cache = {};
 
 		test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
 
