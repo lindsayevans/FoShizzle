@@ -81,6 +81,7 @@
 			mq = null;
 			r_media_query.lastIndex = 0;
 			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
+log(m_mq);
 				if(m_mq[0] === '' && m_mq[3] === undefined) break;
 				if(m_mq[2] !== 'and'){
 					r_media_type.lastIndex = 0;
@@ -153,7 +154,7 @@
 
 		// Regular expressions to match parts of the media query
 		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
-		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(\([^\)]+\))?/gi,
+		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s+)?(\([^\)]+\))?/gi,
 		//r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(?:(?:\()([^\)]+)(?:\)))?/gi, // don't capture parens around expression
 		r_media_type = /^(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)$/gi, // CSS2 media types
 		//r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // doesn't capture min & max prefixes

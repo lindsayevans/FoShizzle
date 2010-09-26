@@ -79,8 +79,16 @@ test('Parser caching', function(){
 
 });
 
-	// TODO: error handling
+/*
+test('Malformed queries', function(){
+	same(FoShizzle.parse('(example, all,), speech'), [], '(example, all,), speech'); // should just be speech
+	same(FoShizzle.parse('&test, screen'), [], '&test, screen'); // should just be screen
+	same(FoShizzle.parse('all and (color) and(width)'), [], 'all and(color)');
+	same(FoShizzle.parse('all and(color)'), [], 'all and(color)');
+	same(FoShizzle.parse('test;,all'), [], 'test;,all');
 
+});
+*/
 	</script>
 
 </body>
