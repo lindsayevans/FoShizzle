@@ -91,14 +91,16 @@ test('Malformed queries', function(){
 */
 
 module('FoShizzle test_non_native');
-test('Basic', function(){
+test('Media types', function(){
 	FoShizzle.debug = true;
 	FoShizzle.native_support = false;
 	ok(FoShizzle('screen'), 'screen');
+	ok(!FoShizzle('aural'), 'aural');
 	ok(FoShizzle('only screen'), 'only screen');
-	ok(!FoShizzle('not screen'), '!not screen');
-	ok(!FoShizzle('aural'), '!aural');
+	ok(!FoShizzle('not screen'), 'not screen');
 	ok(FoShizzle('not aural'), 'not aural');
+	ok(!FoShizzle('not screen, aural'), 'not screen, aural');
+	ok(FoShizzle('screen, not aural'), 'screen, not aural');
 });
 
 	</script>
