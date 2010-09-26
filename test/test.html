@@ -104,6 +104,19 @@ test('Media types', function(){
 	ok(FoShizzle('screen, not aural'), 'screen, not aural');
 });
 
+module('FoShizzle test_non_native');
+test('Media features', function(){
+	FoShizzle.debug = true;
+	FoShizzle.native_support = false;
+	ok(FoShizzle('(width)'), '(width)');
+	ok(FoShizzle('(width:0)'), '(width:0)');
+	ok(FoShizzle('(min-width)'), '(min-width)');
+	ok(FoShizzle('(min-width:0)'), '(min-width:0)');
+	ok(FoShizzle('(max-width)'), '(max-width)');
+	ok(FoShizzle('(max-width:0)'), '(max-width:0)');
+});
+
+
 	</script>
 
 </body>
