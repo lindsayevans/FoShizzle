@@ -18,6 +18,9 @@
 	// Public properties
 	FoShizzle.native_support;
 
+	FoShizzle.test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px;';
+
+	FoShizzle.test_id_prefix = 'FoShizzle-';
 
 	// Public methods
 
@@ -34,20 +37,20 @@
 	// Private functions
 	
 	// Native test
-	// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc.
+	// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc. (would anything that supports MQ NOT support these?)
 	var test_native = function(query){
 		var head = document.getElementsByTagName('head')[0],
 				body = document.getElementsByTagName('body')[0],
 				style = document.createElement('style'),
 				test = document.createElement('div'),
-				style_content = '@media ' + query + ' { #FoShizzle-test { position: absolute; top: -1337em; left: 0; height: 10px; } }'
+				style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + FoShizzle.test_css_properties + ' } }'
 				applied = false;
 
-		style.setAttribute('id', 'FoShizzle-test-style');
+		style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
 		style.innerHTML = style_content;
 		head.appendChild(style);
 
-		test.setAttribute('id', 'FoShizzle-test');
+		test.setAttribute('id', FoShizzle.test_id_prefix + 'test');
 		body.appendChild(test);
 
 		applied = test.clientHeight === 10;
