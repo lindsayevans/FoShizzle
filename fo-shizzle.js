@@ -1,5 +1,5 @@
 /*!
- * FoShizzle 0.0.1 - JavaScript CSS3 Media Query Engine
+ * FoShizzle 0.0.1a - JavaScript CSS3 Media Query Engine
  *
  * Copyright (c) 2010 Lindsay Evans <http://linz.id.au/>
  * Licensed under the MIT <http://www.opensource.org/licenses/mit-license.php)> license.
@@ -16,8 +16,8 @@
 	FoShizzle.major_version = 0;
 	FoShizzle.minor_version = 0;
 	FoShizzle.patch_version = 1;
-	FoShizzle.special_version = '';
-	FoShizzle.version = '0.0.1';
+	FoShizzle.special_version = 'a';
+	FoShizzle.version = '0.0.1a';
 	FoShizzle.globals = ['FoShizzle', '$fs'];
 
 
@@ -68,9 +68,24 @@
 
 	};
 
+	var
+
+		// Regular expressions to match parts of the media query
+		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
+		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(\([^\)]+\))?/gi,
+		//r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(?:(?:\()([^\)]+)(?:\)))?/gi, // don't capture parens around expression
+		r_media_type = /(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)/gi, // CSS2 media types
+		r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // TODO: capture min & max prefixes here?
+		r_media_feature = /(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)/gi
+
+	;
+
 	// Non-native test
 	// TODO: everything
-	var test_non_native = function(query){
+	var test_non_native = function(q){
+
+		// TODO: Parse query
+
 		return false;
 	};
 
