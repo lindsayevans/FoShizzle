@@ -24,7 +24,7 @@
 	// Public properties
 	FoShizzle.native_support;
 
-	FoShizzle.test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px;';
+	FoShizzle.native_test_query = '(min-width: 0)';
 
 	FoShizzle.test_id_prefix = 'FoShizzle-';
 
@@ -32,7 +32,7 @@
 
 	// Check if the device suports native media queries
 	FoShizzle.check_native_support = function(){
-		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = test_native('(min-width: 0px)')) : FoShizzle.native_support;
+		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = test_native(FoShizzle.native_test_query)) : FoShizzle.native_support;
 	};
 
 	// Test if the supplied media query would be applied
@@ -49,7 +49,7 @@
 				body = document.getElementsByTagName('body')[0],
 				style = document.createElement('style'),
 				test = document.createElement('div'),
-				style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + FoShizzle.test_css_properties + ' } }'
+				style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }'
 				applied = false;
 
 		style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
@@ -69,6 +69,8 @@
 	};
 
 	var
+
+		test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
 
 		// Regular expressions to match parts of the media query
 		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
