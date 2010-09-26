@@ -144,15 +144,17 @@
 			var pq = FoShizzle.parse(q),
 					pass = false,
 					query_pass,
-					type_pass, feature_pass;
+					type_pass, feature_pass,
+					i, ii, pq_l = pq.length, pq_e_l;
 
-			for(var i = 0; i < pq.length; i++){
+			for(i = 0; i < pq_l; i++){
 				// Check media type
 				query_pass = type_pass = test_media_type(pq[i].media_type);
 				if(type_pass){
 					// Check expressions
 					feature_pass = true;
-					for(var ii = 0; ii < pq[i].expressions.length; ii++){
+					pq_e_l = pq[i].expressions.length;
+					for(ii = 0; ii < pq_e_l; ii++){
 						feature_pass = feature_pass && test_media_feature(pq[i].expressions[ii].prefix, pq[i].expressions[ii].media_feature, pq[i].expressions[ii].expr);
 					}
 					query_pass = feature_pass;
