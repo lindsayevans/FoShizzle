@@ -24,7 +24,7 @@
 	// Public properties
 	FoShizzle.native_support;
 
-	FoShizzle.native_test_query = '(min-width: 0)';
+	FoShizzle.native_test_query = '(min-width: 0), not screen';
 
 	FoShizzle.test_id_prefix = 'FoShizzle-';
 
