@@ -22,13 +22,13 @@
 
 
 	// Public properties
+	// TODO: add convenience chaining methods for setting properties & returning self
 	FoShizzle.debug = false;
-
 	FoShizzle.native_support;
-
 	FoShizzle.native_test_query = '(min-width: 0), not screen';
-
 	FoShizzle.test_id_prefix = 'FoShizzle-';
+	FoShizzle.ignore_unsupported_media_types = true;
+	FoShizzle.ignore_unsupported_media_features = true;
 
 	// Public methods
 
@@ -44,7 +44,8 @@
 
 
 	// Parses the query
-	// TODO: handle malformed queries
+	// TODO:
+	// - handle malformed queries
 	FoShizzle.parse = function(q){
 
 		var pq = [], mq, m_mql, m_mq, m_e;
@@ -59,17 +60,22 @@
 			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
 				if(m_mq[0] === '' && m_mq[3] === undefined) break;
 				if(m_mq[2] !== 'and'){
-					mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expressions: []};
+					r_media_type.lastIndex = 0;
+					if(m_mq[2] === undefined || (!FoShizzle.ignore_unsupported_media_types || (FoShizzle.ignore_unsupported_media_types && r_media_type.exec(m_mq[2]) !== null))){
+						mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expressions: []};
+					}
 				}
 
 				// Expression
 				r_expression.lastIndex = 0;
-				if(m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null){
+				r_media_feature.lastIndex = 0;
+				if(mq !== null && m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null && (!FoShizzle.ignore_unsupported_media_features || (FoShizzle.ignore_unsupported_media_features && r_media_feature.exec(m_e[2]) !== null))){
 					mq.expressions.push({prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null});
 				}
 
 			}
-			pq.push(mq);
+
+			if(mq !== null) pq.push(mq);
 		}
 
 		return pq;
@@ -123,10 +129,10 @@
 		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
 		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(\([^\)]+\))?/gi,
 		//r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(?:(?:\()([^\)]+)(?:\)))?/gi, // don't capture parens around expression
-		r_media_type = /(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)/gi, // CSS2 media types
+		r_media_type = /^(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)$/gi, // CSS2 media types
 		//r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // doesn't capture min & max prefixes
 		r_expression = /\(\s*(?:(min|max)-)?([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/gi,
-		r_media_feature = /(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)/gi
+		r_media_feature = /^(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)$/gi
 
 
 	;

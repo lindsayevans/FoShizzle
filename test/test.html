@@ -29,10 +29,7 @@ test('Basic support', function(){
 module('FoShizzle.parse()');
 
 test('Multiple queries', function(){
-	FoShizzle.debug = true;
 	same(FoShizzle.parse('only screen, not screen'), [{"query":"only screen","keyword":"only","media_type":"screen","expressions":[]}, {"query":"not screen","keyword":"not","media_type":"screen","expressions":[]}], 'only screen, not screen');
-	FoShizzle.debug = false;
-
 	same(FoShizzle.parse('screen and (width), not screen and (color)'), [{"query":"screen and (width)","keyword":null,"media_type":"screen","expressions":[{"prefix":null,"media_feature":"width","expr":null}]}, {"query":"not screen and (color)","keyword":"not","media_type":"screen","expressions":[{"prefix":null,"media_feature":"color","expr":null}]}], 'screen and (width), not screen and (color)');
 });
 
@@ -42,7 +39,7 @@ test('Media query types', function(){
 	same(FoShizzle.parse('not screen'), [{"query":"not screen","keyword":"not","media_type":"screen","expressions":[]}], 'not screen');
 	same(FoShizzle.parse('only screen'), [{"query":"only screen","keyword":"only","media_type":"screen","expressions":[]}], 'only screen');
 	same(FoShizzle.parse('only screen and (color)'), [{"query":"only screen and (color)","keyword":"only","media_type":"screen","expressions":[{"prefix":null,"media_feature":"color","expr":null}]}], 'only screen and (color)');
-	same(FoShizzle.parse('(color) and (width) and (height)'), [{"query":"(color) and (width) and (height)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"color","expr":null},{"prefix":null,"media_feature":"width","expr":null},{"prefix":null,"media_feature":"height","expr":null}]}], 'only screen and (color) and (width) and (height)');
+	same(FoShizzle.parse('(color) and (width) and (height)'), [{"query":"(color) and (width) and (height)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"color","expr":null},{"prefix":null,"media_feature":"width","expr":null},{"prefix":null,"media_feature":"height","expr":null}]}], '(color) and (width) and (height)');
 	same(FoShizzle.parse('only screen and (color) and (width) and (height)'), [{"query":"only screen and (color) and (width) and (height)","keyword":"only","media_type":"screen","expressions":[{"prefix":null,"media_feature":"color","expr":null},{"prefix":null,"media_feature":"width","expr":null},{"prefix":null,"media_feature":"height","expr":null}]}], 'only screen and (color) and (width) and (height)');
 });
 
@@ -51,6 +48,21 @@ test('Expression types', function(){
 	same(FoShizzle.parse('(width:0)'), [{"query":"(width:0)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"width","expr":"0"}]}], '(width:0)');
 	same(FoShizzle.parse('(min-width:0)'), [{"query":"(min-width:0)","keyword":null,"media_type":null,"expressions":[{"prefix":"min","media_feature":"width","expr":"0"}]}], '(max-width:0)');
 	same(FoShizzle.parse('(max-width:0)'), [{"query":"(max-width:0)","keyword":null,"media_type":null,"expressions":[{"prefix":"max","media_feature":"width","expr":"0"}]}], '(min-width:0)');
+});
+
+
+test('Unsupported types & features', function(){
+	same(FoShizzle.parse('tv-3d'), [], 'tv-3d');
+	same(FoShizzle.parse('(foo)'), [{"query":"(foo)","keyword":null,"media_type":null,"expressions":[]}], '(foo)');
+
+	FoShizzle.ignore_unsupported_media_types = false;
+	same(FoShizzle.parse('tv-3d'), [{"query":"tv-3d","keyword":null,"media_type":"tv-3d","expressions":[]}], 'tv-3d');
+	FoShizzle.ignore_unsupported_media_types = true;
+
+	FoShizzle.ignore_unsupported_media_features = false;
+	same(FoShizzle.parse('(foo)'), [{"query":"(foo)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"foo","expr":null}]}], '(foo)');
+	FoShizzle.ignore_unsupported_media_features = true;
+
 });
 
 	// TODO: error handling
