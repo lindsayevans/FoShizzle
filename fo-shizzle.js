@@ -24,6 +24,7 @@
 	// Public properties
 	// TODO:
 	// - events?
+	// - make extendable - e.g. add_feature(name, f){test_feature_map[name] = f}
 	FoShizzle.debug = false;
 	FoShizzle.native_support;
 	FoShizzle.native_test_query = '(min-width: 0), not screen';
