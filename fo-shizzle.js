@@ -1,3 +1,9 @@
+/*!
+ * FoShizzle 0.0.1 - JavaScript CSS3 Media Query Engine
+ *
+ * Copyright (c) 2010 Lindsay Evans <http://linz.id.au/>
+ * Licensed under the MIT <http://www.opensource.org/licenses/mit-license.php)> license.
+ */
 (function(window, document, undefined){
 
 	var FoShizzle = function(q){
