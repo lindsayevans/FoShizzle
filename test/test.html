@@ -27,12 +27,29 @@ test('Basic support', function(){
 });
 
 module('FoShizzle.parse()');
-test('Expression support', function(){
+
+test('Multiple queries', function(){
+	same(FoShizzle.parse('only screen, not screen'), [{"query":"only screen","keyword":"only","media_type":"screen","expression":null}, {"query":"not screen","keyword":"not","media_type":"screen","expression":null}], 'only screen, not screen');
+	same(FoShizzle.parse('screen and (width), not screen and (color)'), [{"query":"screen and (width)","keyword":null,"media_type":"screen","expression":{"prefix":null,"media_feature":"width","expr":null}}, {"query":"not screen and (color)","keyword":"not","media_type":"screen","expression":{"prefix":null,"media_feature":"color","expr":null}}], 'screen and (width), not screen and (color)');
+});
+
+test('Media query types', function(){
+	same(FoShizzle.parse(''), [], '[empty string]');
+	same(FoShizzle.parse('screen'), [{"query":"screen","keyword":null,"media_type":"screen","expression":null}], 'screen');
+	same(FoShizzle.parse('not screen'), [{"query":"not screen","keyword":"not","media_type":"screen","expression":null}], 'not screen');
+	same(FoShizzle.parse('only screen'), [{"query":"only screen","keyword":"only","media_type":"screen","expression":null}], 'only screen');
+	same(FoShizzle.parse('only screen and (color)'), [{"query":"only screen and (color)","keyword":"only","media_type":"screen","expression":{"prefix":null,"media_feature":"color","expr":null}}], 'only screen and (color)');
+	// TODo: multiple ands
+});
+
+test('Expression types', function(){
 	same(FoShizzle.parse('(width)'), [{"query":"(width)","keyword":null,"media_type":null,"expression":{"prefix":null,"media_feature":"width","expr":null}}], '(width)');
 	same(FoShizzle.parse('(width:0)'), [{"query":"(width:0)","keyword":null,"media_type":null,"expression":{"prefix":null,"media_feature":"width","expr":"0"}}], '(width:0)');
 	same(FoShizzle.parse('(min-width:0)'), [{"query":"(min-width:0)","keyword":null,"media_type":null,"expression":{"prefix":"min","media_feature":"width","expr":"0"}}], '(max-width:0)');
 	same(FoShizzle.parse('(max-width:0)'), [{"query":"(max-width:0)","keyword":null,"media_type":null,"expression":{"prefix":"max","media_feature":"width","expr":"0"}}], '(min-width:0)');
 });
+
+	// TODO: error handling
 
 	</script>
 

@@ -53,6 +53,7 @@
 
 			// Media query
 			r_media_query.lastIndex = 0;
+			// TODO: multiple ands
 			if((m_mq = r_media_query.exec(m_mql[1])) !== null){
 				mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expression: m_mq[3] || null};
 
