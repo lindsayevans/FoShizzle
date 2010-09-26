@@ -165,7 +165,7 @@
 					}
 					query_pass = feature_pass;
 				}
-				pass = pass || (pq[i].keyword === 'not') ? !query_pass : query_pass
+				pass = pass || (pq[i].keyword === 'not') ? !query_pass : query_pass;
 			}
 
 			return pass;
