@@ -99,6 +99,7 @@ test('Media types', function(){
 	ok(FoShizzle('only screen'), 'only screen');
 	ok(!FoShizzle('not screen'), 'not screen');
 	ok(FoShizzle('not aural'), 'not aural');
+	ok(FoShizzle('screen, aural'), 'screen, aural');
 	ok(!FoShizzle('not screen, aural'), 'not screen, aural');
 	ok(FoShizzle('screen, not aural'), 'screen, not aural');
 });
