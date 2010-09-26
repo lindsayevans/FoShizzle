@@ -27,7 +27,7 @@
 	// - make extendable - e.g. add_feature(name, f){test_feature_map[name] = f}
 	FoShizzle.debug = false;
 	FoShizzle.native_support;
-	FoShizzle.native_test_query = '(min-width: 0), not screen';
+	FoShizzle.native_test_query = 'only screen, not screen';
 	FoShizzle.test_id_prefix = 'FoShizzle-';
 	FoShizzle.ignore_unsupported_media_types = true;
 	FoShizzle.ignore_unsupported_media_features = true;
