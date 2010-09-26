@@ -36,7 +36,7 @@
 
 	// Check if the device suports native media queries
 	FoShizzle.check_native_support = function(){
-		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = test_native(FoShizzle.native_test_query)) : FoShizzle.native_support;
+		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = document.createElement && test_native(FoShizzle.native_test_query)) : FoShizzle.native_support;
 	};
 
 	// Test if the supplied media query would be applied
@@ -288,4 +288,4 @@
 	// Expose in globals
 	window.FoShizzle = window.$fs = FoShizzle;
 
-})(window, document);
+})(window || this, document || {});
