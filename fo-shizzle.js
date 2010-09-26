@@ -23,7 +23,6 @@
 
 	// Public properties
 	// TODO:
-	// - add convenience chaining methods for setting properties & returning self
 	// - events?
 	FoShizzle.debug = false;
 	FoShizzle.native_support;
@@ -33,6 +32,12 @@
 	FoShizzle.ignore_unsupported_media_features = true;
 
 	// Public methods
+
+	// Convenience method for setting properties & returning self, for chaining purposes: FoShizzle.set('debug', true).test(...)
+	FoShizzle.set = function(property, value){
+		FoShizzle[property] = value;
+		return FoShizzle;
+	};
 
 	// Check if the device suports native media queries
 	FoShizzle.check_native_support = function(){
