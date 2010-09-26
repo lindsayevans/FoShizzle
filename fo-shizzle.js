@@ -110,6 +110,7 @@
 				// Expression
 				r_expression.lastIndex = 0;
 				r_media_feature.lastIndex = 0;
+				// TODO: the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per 3.1. Error Handling
 				if(mq !== null && m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null && (!FoShizzle.ignore_unsupported_media_features || (FoShizzle.ignore_unsupported_media_features && r_media_feature.exec(m_e[2]) !== null))){
 					mq.expressions.push({prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null});
 				}
@@ -208,6 +209,7 @@
 			return t === v;
 		},
 
+		// TODO: features that don't accept min/max but are given them should return false
 		test_width_feature = function(p, e){
 			return test_number(p, e, window.innerWidth);
 		},
