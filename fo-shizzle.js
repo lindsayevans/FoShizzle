@@ -204,11 +204,66 @@
 			return test_number(p, e, screen.height);
 		},
 
+		// TODO: implement
+		test_orientation_feature = function(p, e){
+			return false;
+		},
+
+		// TODO: implement
+		test_aspect_ratio_feature = function(p, e){
+			return false;
+		},
+
+		// TODO: implement
+		test_device_aspect_ratio_feature = function(p, e){
+			return false;
+		},
+
+		// TODO: implement
+		test_color_feature = function(p, e){
+			return test_number(p, e, screen.colorDepth);
+		},
+
+		// TODO: implement
+		test_color_index_feature = function(p, e){
+			return test_number(p, e, screen.colorDepth);
+		},
+
+		// TODO: implement
+		test_monochrome_feature = function(p, e){
+			return test_number(p, e, screen.colorDepth);
+		},
+
+		// TODO: implement
+		test_resolution_feature = function(p, e){
+			return false;
+		},
+
+		// TODO: implement
+		test_scan_feature = function(p, e){
+			return false;
+		},
+
+		// TODO: implement
+		test_grid_feature = function(p, e){
+			return false;
+		},
+
+
 		test_feature_map = {
 			'width': test_width_feature,
 			'height': test_height_feature,
 			'device-width': test_device_width_feature,
-			'device-height': test_device_height_feature
+			'device-height': test_device_height_feature,
+			'orientation': test_orientation_feature,
+			'aspect-ratio': test_aspect_ratio_feature,
+			'device-aspect-ratio': test_device_aspect_ratio_feature,
+			'color': test_color_feature,
+			'color-index': test_color_index_feature,
+			'monochrome': test_monochrome_feature,
+			'resolution': test_resolution_feature,
+			'scan': test_scan_feature,
+			'grid': test_grid_feature
 		},
 
 		query_parser_cache = {};
