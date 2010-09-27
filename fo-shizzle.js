@@ -72,8 +72,11 @@
 		if(test_feature_map[name] === undefined){
 			var s = r_media_feature.source.split('('),
 					m = r_media_feature.global ? 'g' : '';
-			m += r_media_feature.ignoreCase ? 'i' : ''
-			r_media_feature.compile(s[0] + '(' + name + '|' + s[1], m);
+			m += r_media_feature.ignoreCase ? 'i' : '';
+
+			// apparently doesn't work in Opera - new RegExp() should, and doesn't incur a significant performance penalty
+			//r_media_feature.compile(s[0] + '(' + name + '|' + s[1], m);
+			r_media_feature = new RegExp(s[0] + '(' + name + '|' + s[1], m);
 		}
 		// Add feature test function to map
 		test_feature_map[name] = f;
