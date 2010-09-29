@@ -140,11 +140,15 @@ test('Media features', function(){
 
 
 	ok(FoShizzle('(resolution)'), '(resolution)');
-	ok(!FoShizzle('(resolution:0dpi)'), '(resolution:dpi)');
+	ok(!FoShizzle('(resolution:0dpi)'), '(resolution:0dpi)');
 	ok(FoShizzle('(min-resolution)'), '(min-resolution)');
-	ok(FoShizzle('(min-resolution:0dpi)'), '(min-resolution:dpi)');
+	ok(FoShizzle('(min-resolution:0dpi)'), '(min-resolution:0dpi)');
 	ok(FoShizzle('(max-resolution)'), '(max-resolution)');
 	ok(FoShizzle('(max-resolution:9000dpi)'), '(max-resolution:9000dpi)');
+	ok(!FoShizzle('(resolution:0dpcm)'), '(resolution:0dpcm)');
+	ok(FoShizzle('(min-resolution:0dpcm)'), '(min-resolution:0dpcm)');
+	ok(FoShizzle('(max-resolution:9000dpcm)'), '(max-resolution:9000dpcm)');
+
 
 
 	//ok(FoShizzle('(orientation)'), '(orientation)');
