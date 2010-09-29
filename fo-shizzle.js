@@ -229,6 +229,33 @@
 			return test_number(p, e, screen.height);
 		},
 
+		test_feature_resolution = function(p, e){}
+
+			var head = document.getElementsByTagName('head')[0],
+					body = document.getElementsByTagName('body')[0],
+					style = document.createElement('style'),
+					test = document.createElement('div'),
+					units = e.indexOf('dpi' === -1 ? 'cm' : 'in',
+					width = units === 'in' ? '2.54' : '1',
+					style_content = '#' + FoShizzle.test_id_prefix + 'dpi-test { width: ' + width + 'cm !important; padding: 0 !important; } }'
+					ppu;
+
+			style.setAttribute('id', FoShizzle.test_id_prefix + 'dpi-test-style');
+			style.innerHTML = style_content;
+			head.appendChild(style);
+
+			test.setAttribute('id', FoShizzle.test_id_prefix + 'dpi-test');
+			body.appendChild(test);
+
+			ppu = document.getElementById(FoShizzle.test_id_prefix + 'dpi-test').offsetWidth;
+
+			head.removeChild(style);
+			body.removeChild(test);
+
+			return test_number(p, e, ppu);
+
+		},
+
 		test_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
@@ -246,7 +273,7 @@
 			'color': test_feature_unimplemented,
 			'color-index': test_feature_unimplemented,
 			'monochrome': test_feature_unimplemented,
-			'resolution': test_feature_unimplemented,
+			'resolution': test_feature_resolution, 
 			'scan': test_feature_unimplemented,
 			'grid': test_feature_unimplemented
 		},
