@@ -138,6 +138,15 @@ test('Media features', function(){
 	ok(FoShizzle('(max-device-height)'), '(max-device-height)');
 	ok(FoShizzle('(max-device-height:9000px)'), '(max-device-height:9000px)');
 
+
+	ok(FoShizzle('(resolution)'), '(resolution)');
+	ok(!FoShizzle('(resolution:0dpi)'), '(resolution:dpi)');
+	ok(FoShizzle('(min-resolution)'), '(min-resolution)');
+	ok(FoShizzle('(min-resolution:0dpi)'), '(min-resolution:dpi)');
+	ok(FoShizzle('(max-resolution)'), '(max-resolution)');
+	ok(FoShizzle('(max-resolution:9000dpi)'), '(max-resolution:9000dpi)');
+
+
 	//ok(FoShizzle('(orientation)'), '(orientation)');
 
 });
