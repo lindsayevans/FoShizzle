@@ -4,7 +4,8 @@
  * Copyright (c) 2010 Lindsay Evans <http://linz.id.au/>
  * Licensed under the MIT <http://www.opensource.org/licenses/mit-license.php)> license.
  */
-(function(window, document, screen, undefined){
+/*jslint eqeqeq: true */
+(function(window, document, screen/*, undefined*/){
 
 	var FoShizzle = function(q){
 		return FoShizzle.test(q);
@@ -25,7 +26,7 @@
 	// TODO:
 	// - events?
 	FoShizzle.debug = false;
-	FoShizzle.native_support;
+	FoShizzle.native_support = undefined;
 	FoShizzle.native_test_query = 'only screen, not screen';
 	FoShizzle.test_id_prefix = 'FoShizzle-';
 	FoShizzle.ignore_unsupported_media_types = true;
@@ -88,7 +89,8 @@
 	// - handle malformed queries
 	FoShizzle.parse = function(q){
 
-		var q = q.toLowerCase(), pq = [], mq, m_mql, m_mq, m_e;
+		var pq = [], mq, m_mql, m_mq, m_e;
+		q = q.toLowerCase();
 
 		if(FoShizzle.is_cached(q)){
 			return query_parser_cache[q];
@@ -102,7 +104,9 @@
 			mq = null;
 			r_media_query.lastIndex = 0;
 			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
-				if(m_mq[0] === '' && m_mq[3] === undefined) break;
+				if(m_mq[0] === '' && m_mq[3] === undefined){
+					break;
+				}
 				if(m_mq[2] !== 'and'){
 					r_media_type.lastIndex = 0;
 					if(m_mq[2] === undefined || (!FoShizzle.ignore_unsupported_media_types || (FoShizzle.ignore_unsupported_media_types && r_media_type.exec(m_mq[2]) !== null))){
@@ -120,10 +124,12 @@
 
 			}
 
-			if(mq !== null) pq.push(mq);
+			if(mq !== null){
+				pq.push(mq);
+			}
 		}
 
-		return query_parser_cache[q] = pq;
+		return (query_parser_cache[q] = pq);
 
 	};
 
@@ -131,7 +137,9 @@
 	var
 
 		log = function(m){
-			if(FoShizzle.debug && console.log) console.log(m);
+			if(FoShizzle.debug && console.log){
+				console.log(m);
+			}
 		},
 
 		// Native test
@@ -141,7 +149,7 @@
 					body = document.getElementsByTagName('body')[0],
 					style = document.createElement('style'),
 					test = document.createElement('div'),
-					style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }'
+					style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }',
 					applied = false;
 
 			style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
@@ -190,7 +198,9 @@
 		// Test if the device supports the specified media type
 		// TODO: do it
 		test_media_type = function(media_type){
-			if(media_type === null || media_type === 'all') return true;
+			if(media_type === null || media_type === 'all'){
+				return true;
+			}
 			return media_type === 'screen';
 		},
 
@@ -200,9 +210,13 @@
 		},
 
 		test_number = function(p, e, t){
-			var v = parseInt(e);
-			if(t === undefined) return false;
-			if(isNaN(v)) return true;
+			var v = parseInt(e, 10);
+			if(t === undefined){
+				return false;
+			}
+			if(isNaN(v)){
+				return true;
+			}
 			switch(p){
 				case 'min':
 					return t >= v;
@@ -284,11 +298,11 @@
 
 		// Regular expressions to match parts of the media query
 		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
-		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s+)?(\([^\)]+\))?/gi,
+		r_media_query = /(only|not)?\s*([a-z]+[a-z0-9\-]*)?\s*(?:and\s+)?(\([^\)]+\))?/gi,
 		//r_media_query = /(only|not)?\s*([a-z]+[a-z0-9-]*)?\s*(?:and\s*)?(?:(?:\()([^\)]+)(?:\)))?/gi, // don't capture parens around expression
 		r_media_type = /^(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)$/gi, // CSS2 media types
 		//r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // doesn't capture min & max prefixes
-		r_expression = /\(\s*(?:(min|max)-)?([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/gi,
+		r_expression = /\(\s*(?:(min|max)\-)?([a-z]+[a-z0-9\-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/gi,
 		r_media_feature = /^(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)$/gi
 
 
