@@ -4,7 +4,22 @@
  * Copyright (c) 2010 Lindsay Evans <http://linz.id.au/>
  * Licensed under the MIT <http://www.opensource.org/licenses/mit-license.php)> license.
  */
+
 /*jslint eqeqeq: true */
+/*global console: false, window: false, document: false, screen: false */
+
+/* TODO:
+ * - events?
+ * - extensibility:
+ *   - implement media type add/replace
+ *   - allow overriding window, document, screen
+ * - handle malformed queries in .parse()
+ * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
+ * - implement test_media_type()
+ * - features that don't accept min/max but are given them should return false
+ * - implement unimplemented feature tests
+ * - rename test_ to check_ to avoid confusion?
+ */
 (function(window, document, screen/*, undefined*/){
 
 	var FoShizzle = function(q){
@@ -23,8 +38,6 @@
 
 
 	// Public properties
-	// TODO:
-	// - events?
 	FoShizzle.debug = false;
 	FoShizzle.native_support = undefined;
 	FoShizzle.native_test_query = 'only screen, not screen';
@@ -85,8 +98,6 @@
 	};
 
 	// Parses the query
-	// TODO:
-	// - handle malformed queries
 	FoShizzle.parse = function(q){
 
 		var pq = [], mq, m_mql, m_mq, m_e;
@@ -117,7 +128,6 @@
 				// Expression
 				r_expression.lastIndex = 0;
 				r_media_feature.lastIndex = 0;
-				// TODO: the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per 3.1. Error Handling
 				if(mq !== null && m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null && (!FoShizzle.ignore_unsupported_media_features || (FoShizzle.ignore_unsupported_media_features && r_media_feature.exec(m_e[2]) !== null))){
 					mq.expressions.push({prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null});
 				}
@@ -143,7 +153,6 @@
 		},
 
 		// Native test
-		// TODO: handle devices that don't support getElementsByTagName, createElement, appendChild etc. (would anything that supports MQ NOT support these?)
 		test_native = function(query){
 			var head = document.getElementsByTagName('head')[0],
 					body = document.getElementsByTagName('body')[0],
@@ -196,7 +205,6 @@
 		},
 
 		// Test if the device supports the specified media type
-		// TODO: do it
 		test_media_type = function(media_type){
 			if(media_type === null || media_type === 'all'){
 				return true;
@@ -226,7 +234,6 @@
 			return t === v;
 		},
 
-		// TODO: features that don't accept min/max but are given them should return false
 		test_width_feature = function(p, e){
 			return test_number(p, e, window.innerWidth);
 		},
@@ -280,7 +287,6 @@
 			'height': test_height_feature,
 			'device-width': test_device_width_feature,
 			'device-height': test_device_height_feature,
-			// TODO: implement
 			'orientation': test_feature_unimplemented,
 			'aspect-ratio': test_feature_unimplemented,
 			'device-aspect-ratio': test_feature_unimplemented,
