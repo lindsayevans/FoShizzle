@@ -250,7 +250,7 @@
 			return test_number(p, e, screen.height);
 		},
 
-		test_feature_resolution = function(p, e){
+		test_resolution_feature = function(p, e){
 
 			var head = document.getElementsByTagName('head')[0],
 					body = document.getElementsByTagName('body')[0],
@@ -293,7 +293,7 @@
 			'color': test_feature_unimplemented,
 			'color-index': test_feature_unimplemented,
 			'monochrome': test_feature_unimplemented,
-			'resolution': test_feature_resolution,
+			'resolution': test_resolution_feature,
 			'scan': test_feature_unimplemented,
 			'grid': test_feature_unimplemented
 		},
