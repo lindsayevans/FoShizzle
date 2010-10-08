@@ -15,10 +15,10 @@
  *   - allow overriding window, document, screen
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
- * - implement test_media_type()
+ * - implement check_media_type()
  * - features that don't accept min/max but are given them should return false
  * - implement unimplemented feature tests
- * - rename test_ to check_ to avoid confusion?
+ * - rename check_ to check_ to avoid confusion?
  */
 (function(window, document, screen/*, undefined*/){
 
@@ -40,8 +40,8 @@
 	// Public properties
 	FoShizzle.debug = false;
 	FoShizzle.native_support = undefined;
-	FoShizzle.native_test_query = 'only screen, not screen';
-	FoShizzle.test_id_prefix = 'FoShizzle-';
+	FoShizzle.native_check_query = 'only screen, not screen';
+	FoShizzle.check_id_prefix = 'FoShizzle-';
 	FoShizzle.ignore_unsupported_media_types = true;
 	FoShizzle.ignore_unsupported_media_features = true;
 
@@ -55,12 +55,12 @@
 
 	// Check if the device suports native media queries
 	FoShizzle.check_native_support = function(){
-		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = document.createElement && test_native(FoShizzle.native_test_query)) : FoShizzle.native_support;
+		return FoShizzle.native_support === undefined ? (FoShizzle.native_support = document.createElement && check_native(FoShizzle.native_check_query)) : FoShizzle.native_support;
 	};
 
 	// Test if the supplied media query would be applied
 	FoShizzle.test = function(q){
-		return (FoShizzle.check_native_support() ? test_native : test_non_native)(q);
+		return (FoShizzle.check_native_support() ? check_native : check_non_native)(q);
 	};
 
 	// Check if a query is in the cache
@@ -83,7 +83,7 @@
 	// Extensibility - add/replace media feature
 	FoShizzle.add_feature = function(name, f){
 		// Add name to feature RegExp if not exist
-		if(test_feature_map[name] === undefined){
+		if(check_feature_map[name] === undefined){
 			var s = r_media_feature.source.split('('),
 					m = r_media_feature.global ? 'g' : '';
 			m += r_media_feature.ignoreCase ? 'i' : '';
@@ -93,7 +93,7 @@
 			r_media_feature = new RegExp(s[0] + '(' + name + '|' + s[1], m);
 		}
 		// Add feature test function to map
-		test_feature_map[name] = f;
+		check_feature_map[name] = f;
 		return FoShizzle;
 	};
 
@@ -153,19 +153,19 @@
 		},
 
 		// Native test
-		test_native = function(query){
+		check_native = function(query){
 			var head = document.getElementsByTagName('head')[0],
 					body = document.getElementsByTagName('body')[0],
 					style = document.createElement('style'),
 					test = document.createElement('div'),
-					style_content = '@media ' + query + ' { #' + FoShizzle.test_id_prefix + 'test { ' + test_css_properties + ' } }',
+					style_content = '@media ' + query + ' { #' + FoShizzle.check_id_prefix + 'test { ' + check_css_properties + ' } }',
 					applied = false;
 
-			style.setAttribute('id', FoShizzle.test_id_prefix + 'test-style');
+			style.setAttribute('id', FoShizzle.check_id_prefix + 'test-style');
 			style.innerHTML = style_content;
 			head.appendChild(style);
 
-			test.setAttribute('id', FoShizzle.test_id_prefix + 'test');
+			test.setAttribute('id', FoShizzle.check_id_prefix + 'test');
 			body.appendChild(test);
 
 			applied = test.clientHeight === 10;
@@ -178,7 +178,7 @@
 		},
 
 		// Non-native test
-		test_non_native = function(q){
+		check_non_native = function(q){
 
 			var pq = FoShizzle.parse(q),
 					pass = false,
@@ -188,13 +188,13 @@
 
 			for(i = 0; i < pq_l; i++){
 				// Check media type
-				query_pass = type_pass = test_media_type(pq[i].media_type);
+				query_pass = type_pass = check_media_type(pq[i].media_type);
 				if(type_pass){
 					// Check expressions
 					feature_pass = true;
 					pq_e_l = pq[i].expressions.length;
 					for(ii = 0; ii < pq_e_l; ii++){
-						feature_pass = feature_pass && test_media_feature(pq[i].expressions[ii].prefix, pq[i].expressions[ii].media_feature, pq[i].expressions[ii].expr);
+						feature_pass = feature_pass && check_media_feature(pq[i].expressions[ii].prefix, pq[i].expressions[ii].media_feature, pq[i].expressions[ii].expr);
 					}
 					query_pass = feature_pass;
 				}
@@ -205,7 +205,7 @@
 		},
 
 		// Test if the device supports the specified media type
-		test_media_type = function(media_type){
+		check_media_type = function(media_type){
 			if(media_type === null || media_type === 'all'){
 				return true;
 			}
@@ -213,11 +213,11 @@
 		},
 
 		// Test if the device supports the specified media feature
-		test_media_feature = function(prefix, media_feature, expr){			
-			return test_feature_map[media_feature].call(this, prefix, expr, media_feature);
+		check_media_feature = function(prefix, media_feature, expr){			
+			return check_feature_map[media_feature].call(this, prefix, expr, media_feature);
 		},
 
-		test_number = function(p, e, t){
+		check_number = function(p, e, t){
 			var v = parseInt(e, 10);
 			if(t === undefined){
 				return false;
@@ -234,23 +234,23 @@
 			return t === v;
 		},
 
-		test_width_feature = function(p, e){
-			return test_number(p, e, window.innerWidth);
+		check_width_feature = function(p, e){
+			return check_number(p, e, window.innerWidth);
 		},
 
-		test_height_feature = function(p, e){
-			return test_number(p, e, window.innerHeight);
+		check_height_feature = function(p, e){
+			return check_number(p, e, window.innerHeight);
 		},
 
-		test_device_width_feature = function(p, e){
-			return test_number(p, e, screen.width);
+		check_device_width_feature = function(p, e){
+			return check_number(p, e, screen.width);
 		},
 
-		test_device_height_feature = function(p, e){
-			return test_number(p, e, screen.height);
+		check_device_height_feature = function(p, e){
+			return check_number(p, e, screen.height);
 		},
 
-		test_resolution_feature = function(p, e){
+		check_resolution_feature = function(p, e){
 
 			var head = document.getElementsByTagName('head')[0],
 					body = document.getElementsByTagName('body')[0],
@@ -258,49 +258,49 @@
 					test = document.createElement('div'),
 					units = e !== null && e.indexOf('dpi' === -1) ? 'cm' : 'in',
 					width = units === 'in' ? '2.54' : '1',
-					style_content = '#' + FoShizzle.test_id_prefix + 'dpi-test { width: ' + width + 'cm !important; padding: 0 !important; } }',
+					style_content = '#' + FoShizzle.check_id_prefix + 'dpi-test { width: ' + width + 'cm !important; padding: 0 !important; } }',
 					ppu;
 
-			style.setAttribute('id', FoShizzle.test_id_prefix + 'dpi-test-style');
+			style.setAttribute('id', FoShizzle.check_id_prefix + 'dpi-test-style');
 			style.innerHTML = style_content;
 			head.appendChild(style);
 
-			test.setAttribute('id', FoShizzle.test_id_prefix + 'dpi-test');
+			test.setAttribute('id', FoShizzle.check_id_prefix + 'dpi-test');
 			body.appendChild(test);
 
-			ppu = document.getElementById(FoShizzle.test_id_prefix + 'dpi-test').offsetWidth;
+			ppu = document.getElementById(FoShizzle.check_id_prefix + 'dpi-test').offsetWidth;
 
 			head.removeChild(style);
 			body.removeChild(test);
 
-			return test_number(p, e, ppu);
+			return check_number(p, e, ppu);
 
 		},
 
-		test_feature_unimplemented = function(p, e, f){
+		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
 
 
-		test_feature_map = {
-			'width': test_width_feature,
-			'height': test_height_feature,
-			'device-width': test_device_width_feature,
-			'device-height': test_device_height_feature,
-			'orientation': test_feature_unimplemented,
-			'aspect-ratio': test_feature_unimplemented,
-			'device-aspect-ratio': test_feature_unimplemented,
-			'color': test_feature_unimplemented,
-			'color-index': test_feature_unimplemented,
-			'monochrome': test_feature_unimplemented,
-			'resolution': test_resolution_feature,
-			'scan': test_feature_unimplemented,
-			'grid': test_feature_unimplemented
+		check_feature_map = {
+			'width': check_width_feature,
+			'height': check_height_feature,
+			'device-width': check_device_width_feature,
+			'device-height': check_device_height_feature,
+			'orientation': check_feature_unimplemented,
+			'aspect-ratio': check_feature_unimplemented,
+			'device-aspect-ratio': check_feature_unimplemented,
+			'color': check_feature_unimplemented,
+			'color-index': check_feature_unimplemented,
+			'monochrome': check_feature_unimplemented,
+			'resolution': check_resolution_feature,
+			'scan': check_feature_unimplemented,
+			'grid': check_feature_unimplemented
 		},
 
 		query_parser_cache = {},
 
-		test_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
+		check_css_properties = 'position: absolute; top: -1337em; left: 0; height: 10px !important;',
 
 		// Regular expressions to match parts of the media query
 		r_media_query_list = /([^,]+)(?:\s*,\s*)?/g,
