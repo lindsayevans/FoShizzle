@@ -38,6 +38,7 @@
 	// Public properties
 	FoShizzle.debug = false;
 	FoShizzle.native_support = undefined;
+	FoShizzle.user_agent = navigator.userAgent || '';
 	FoShizzle.native_check_query = 'only screen, not screen';
 	FoShizzle.check_id_prefix = 'FoShizzle-';
 	FoShizzle.ignore_unsupported_media_types = true;
@@ -207,6 +208,15 @@
 			if(media_type === null || media_type === 'all'){
 				return true;
 			}
+
+			if(media_type === 'handheld' && r_handheld_ua.exec(FoShizzle.user_agent)){
+				return true;
+			}
+
+			if(media_type === 'tv' && r_tv_ua.exec(FoShizzle.user_agent)){
+				return true;
+			}
+
 			return media_type === 'screen';
 		},
 
@@ -373,8 +383,15 @@
 		r_media_type = /^(all|aural|braille|embossed|handheld|print|projection|screen|speech|tty|tv)$/gi, // CSS2 media types
 		//r_expression = /\(\s*([a-z]+[a-z0-9-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/g, // doesn't capture min & max prefixes
 		r_expression = /\(\s*(?:(min|max)\-)?([a-z]+[a-z0-9\-]*)\s*(?:(?:\:\s*)([^\)]+)?)?\)/gi,
-		r_media_feature = /^(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)$/gi
+		r_media_feature = /^(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)$/gi,
 
+		// Check if User Agent string matches known handheld devices
+		r_handheld_ua = /IEMobile|WM5 PIE|Windows Phone|Windows CE|MobileExplorer|Blackberry|UP\.Browser|UP\.Link|NetFront|Smartphone|Opera Mini|Opera Mob|Nokia|Symbian|SymbOS|PalmOS|PalmSource|SonyEricsson|PlayStation Portable|/gi,
+
+		// Check if User Agent string matches known TV devices
+		r_tv_ua = /Wii|PLAYSTATION 3|XboxWebTV|MSNTV|MediaCenter/gi
+
+		// TODO: do screen readers etc. expose themselves in the UA string? printers?
 
 	;
 

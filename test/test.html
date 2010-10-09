@@ -103,6 +103,13 @@ test('Media types', function(){
 	ok(FoShizzle('screen, aural'), 'screen, aural');
 	ok(!FoShizzle('not screen, aural'), 'not screen, aural');
 	ok(FoShizzle('screen, not aural'), 'screen, not aural');
+
+	FoShizzle.user_agent = 'Nokia6680/1.0 (4.04.07) SymbianOS/8.0 Series60/2.6 Profile/MIDP-2.0 Configuration/CLDC-1.1';
+	ok(FoShizzle('handheld'), 'handheld');
+
+	FoShizzle.user_agent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; Media Center PC 3.0; .NET CLR 1.0.3705; MediaCenter 5.1.2600.2180)';
+	ok(FoShizzle('tv'), 'tv');
+
 });
 
 test('Media features', function(){
