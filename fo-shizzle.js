@@ -335,6 +335,15 @@
 			return check_float(p, ar[0] / ar[1], screen.width / screen.height);
 		},
 
+		check_color_feature = function(p, e){
+			return check_number(p, e, screen.colorDepth / 8);
+		},
+
+		check_color_feature = function(p, e){
+			return check_number(p, e, screen.colorDepth / 8);
+		},
+
+
 		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
@@ -348,7 +357,7 @@
 			'orientation': check_orientation_feature,
 			'aspect-ratio': check_aspect_ratio_feature,
 			'device-aspect-ratio': check_device_aspect_ratio_feature,
-			'color': check_feature_unimplemented,
+			'color': check_color_feature,
 			'color-index': check_feature_unimplemented,
 			'monochrome': check_feature_unimplemented,
 			'resolution': check_resolution_feature,

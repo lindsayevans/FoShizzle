@@ -175,8 +175,12 @@ test('Media features', function(){
 	ok(FoShizzle('(max-device-aspect-ratio)'), '(max-device-aspect-ratio)');
 	ok(FoShizzle('(max-device-aspect-ratio:14/3)'), '(max-device-aspect-ratio:14/3)');
 
+	ok(FoShizzle('(color)'), '(color)');
+	ok(FoShizzle('(color:3)'), '(color:3)');
+	ok(!FoShizzle('(color:0)'), '(color:0)');
+	ok(FoShizzle('(min-color:1)'), '(min-color:1)');
+	ok(FoShizzle('(max-color:3)'), '(max-color:3)');
 
-	//ok(FoShizzle('(orientation)'), '(orientation)');
 
 });
 
