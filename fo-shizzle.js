@@ -209,11 +209,11 @@
 				return true;
 			}
 
-			if(media_type === 'handheld' && r_handheld_ua.exec(FoShizzle.user_agent)){
+			if(media_type === 'handheld' && r_handheld_ua.test(FoShizzle.user_agent)){
 				return true;
 			}
 
-			if(media_type === 'tv' && r_tv_ua.exec(FoShizzle.user_agent)){
+			if(media_type === 'tv' && r_tv_ua.test(FoShizzle.user_agent)){
 				return true;
 			}
 
@@ -386,10 +386,10 @@
 		r_media_feature = /^(width|height|device-width|device-height|orientation|aspect-ratio|device-aspect-ratio|color|color-index|monochrome|resolution|scan|grid)$/gi,
 
 		// Check if User Agent string matches known handheld devices
-		r_handheld_ua = /IEMobile|WM5 PIE|Windows Phone|Windows CE|MobileExplorer|Blackberry|UP\.Browser|UP\.Link|NetFront|Smartphone|Opera Mini|Opera Mob|Nokia|Symbian|SymbOS|PalmOS|PalmSource|SonyEricsson|PlayStation Portable|/gi,
+		r_handheld_ua = /IEMobile|WM5 PIE|Windows Phone|Windows CE|MobileExplorer|Blackberry|UP\.Browser|UP\.Link|NetFront|Smartphone|Opera Mini|Opera Mob|Nokia|Symbian|SymbOS|PalmOS|PalmSource|SonyEricsson|PlayStation Portable/gi,
 
 		// Check if User Agent string matches known TV devices
-		r_tv_ua = /Wii|PLAYSTATION 3|XboxWebTV|MSNTV|MediaCenter/gi
+		r_tv_ua = /Wii|PLAYSTATION 3|Xbox|WebTV|MSNTV|MediaCenter/gi
 
 		// TODO: do screen readers etc. expose themselves in the UA string? printers?
 
