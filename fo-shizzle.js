@@ -16,9 +16,7 @@
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
  * - implement check_media_type()
- * - features that don't accept min/max but are given them should return false
- * - implement unimplemented feature tests
- * - rename check_ to check_ to avoid confusion?
+ * - implement unimplemented feature checks
  */
 (function(window, document, screen/*, undefined*/){
 
