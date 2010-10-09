@@ -339,10 +339,9 @@
 			return check_number(p, e, screen.colorDepth / 8);
 		},
 
-		check_color_feature = function(p, e){
-			return check_number(p, e, screen.colorDepth / 8);
+		check_color_index_feature = function(p, e){
+			return check_number(p, e, Math.pow(2, screen.colorDepth));
 		},
-
 
 		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
@@ -358,7 +357,7 @@
 			'aspect-ratio': check_aspect_ratio_feature,
 			'device-aspect-ratio': check_device_aspect_ratio_feature,
 			'color': check_color_feature,
-			'color-index': check_feature_unimplemented,
+			'color-index': check_color_index_feature,
 			'monochrome': check_feature_unimplemented,
 			'resolution': check_resolution_feature,
 			'scan': check_feature_unimplemented,
