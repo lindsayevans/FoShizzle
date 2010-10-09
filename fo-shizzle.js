@@ -321,6 +321,20 @@
 			return check_float(p, ar[0] / ar[1], window.innerWidth / window.innerHeight);
 		},
 
+		check_device_aspect_ratio_feature = function(p, e){
+
+			if(e === null){
+				return true;
+			}
+
+			var ar = e.split('/');
+
+			if(ar.length !== 2){
+				return false;
+			}
+			return check_float(p, ar[0] / ar[1], screen.width / screen.height);
+		},
+
 		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
@@ -333,7 +347,7 @@
 			'device-height': check_device_height_feature,
 			'orientation': check_orientation_feature,
 			'aspect-ratio': check_aspect_ratio_feature,
-			'device-aspect-ratio': check_feature_unimplemented,
+			'device-aspect-ratio': check_device_aspect_ratio_feature,
 			'color': check_feature_unimplemented,
 			'color-index': check_feature_unimplemented,
 			'monochrome': check_feature_unimplemented,

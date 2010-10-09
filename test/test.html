@@ -159,10 +159,21 @@ test('Media features', function(){
 
 	ok(FoShizzle('(aspect-ratio)'), '(aspect-ratio)');
 	ok(!FoShizzle('(aspect-ratio:0)'), '(aspect-ratio:0)');
+	ok(!FoShizzle('(aspect-ratio:1/2)'), '(aspect-ratio:1/2)');
 	ok(FoShizzle('(min-aspect-ratio)'), '(min-aspect-ratio)');
 	ok(FoShizzle('(min-aspect-ratio:4/3)'), '(min-aspect-ratio:4/3)');
 	ok(FoShizzle('(max-aspect-ratio)'), '(max-aspect-ratio)');
 	ok(FoShizzle('(max-aspect-ratio:14/3)'), '(max-aspect-ratio:14/3)');
+
+
+	ok(FoShizzle('(device-aspect-ratio)'), '(device-aspect-ratio)');
+	//ok(FoShizzle('(device-aspect-ratio:16/10)'), '(device-aspect-ratio:16/10)');
+	ok(!FoShizzle('(device-aspect-ratio:1/2)'), '(device-aspect-ratio:1/2)');
+	ok(!FoShizzle('(device-aspect-ratio:0)'), '(device-aspect-ratio:0)');
+	ok(FoShizzle('(min-device-aspect-ratio)'), '(min-device-aspect-ratio)');
+	ok(FoShizzle('(min-device-aspect-ratio:4/3)'), '(min-device-aspect-ratio:4/3)');
+	ok(FoShizzle('(max-device-aspect-ratio)'), '(max-device-aspect-ratio)');
+	ok(FoShizzle('(max-device-aspect-ratio:14/3)'), '(max-device-aspect-ratio:14/3)');
 
 
 	//ok(FoShizzle('(orientation)'), '(orientation)');
