@@ -157,6 +157,13 @@ test('Media features', function(){
 	ok(!FoShizzle('(max-orientation:portrait)'), '(max-orientation:portrait)');
 
 
+	ok(FoShizzle('(aspect-ratio)'), '(aspect-ratio)');
+	ok(!FoShizzle('(aspect-ratio:0)'), '(aspect-ratio:0)');
+	ok(FoShizzle('(min-aspect-ratio)'), '(min-aspect-ratio)');
+	ok(FoShizzle('(min-aspect-ratio:4/3)'), '(min-aspect-ratio:4/3)');
+	ok(FoShizzle('(max-aspect-ratio)'), '(max-aspect-ratio)');
+	ok(FoShizzle('(max-aspect-ratio:14/3)'), '(max-aspect-ratio:14/3)');
+
 
 	//ok(FoShizzle('(orientation)'), '(orientation)');
 

@@ -234,6 +234,23 @@
 			return t === v;
 		},
 
+		check_float = function(p, e, t){
+			var v = parseFloat(e);
+			if(t === undefined){
+				return false;
+			}
+			if(isNaN(v)){
+				return true;
+			}
+			switch(p){
+				case 'min':
+					return t >= v;
+				case 'max':
+					return t <= v;
+			}
+			return t === v;
+		},
+
 		check_width_feature = function(p, e){
 			return check_number(p, e, window.innerWidth);
 		},
@@ -290,6 +307,20 @@
 			return false;
 		},
 
+		check_aspect_ratio_feature = function(p, e){
+
+			if(e === null){
+				return true;
+			}
+
+			var ar = e.split('/');
+
+			if(ar.length !== 2){
+				return false;
+			}
+			return check_float(p, ar[0] / ar[1], window.innerWidth / window.innerHeight);
+		},
+
 		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
@@ -301,7 +332,7 @@
 			'device-width': check_device_width_feature,
 			'device-height': check_device_height_feature,
 			'orientation': check_orientation_feature,
-			'aspect-ratio': check_feature_unimplemented,
+			'aspect-ratio': check_aspect_ratio_feature,
 			'device-aspect-ratio': check_feature_unimplemented,
 			'color': check_feature_unimplemented,
 			'color-index': check_feature_unimplemented,
