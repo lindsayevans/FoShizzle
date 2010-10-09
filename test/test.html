@@ -150,6 +150,13 @@ test('Media features', function(){
 	ok(FoShizzle('(max-resolution:9000dpcm)'), '(max-resolution:9000dpcm)');
 
 
+	ok(FoShizzle('(orientation)'), '(orientation)');
+	ok(FoShizzle('(orientation:landscape)'), '(orientation:landscape)');
+	ok(!FoShizzle('(orientation:portrait)'), '(orientation:portrait)');
+	ok(!FoShizzle('(min-orientation:portrait)'), '(min-orientation:portrait)');
+	ok(!FoShizzle('(max-orientation:portrait)'), '(max-orientation:portrait)');
+
+
 
 	//ok(FoShizzle('(orientation)'), '(orientation)');
 

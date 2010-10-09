@@ -277,6 +277,19 @@
 
 		},
 
+		check_orientation_feature = function(p, e){
+			if(p !== null){
+				return false;
+			}else if(e === null){
+				return true;
+			}else if(e === 'portrait' && window.innerHeight >= window.innerWidth){
+				return true;
+			}else if(e === 'landscape' && window.innerHeight < window.innerWidth){
+				return true;
+			}
+			return false;
+		},
+
 		check_feature_unimplemented = function(p, e, f){
 			throw(f + ' feature detection is not implemented');
 		},
@@ -287,7 +300,7 @@
 			'height': check_height_feature,
 			'device-width': check_device_width_feature,
 			'device-height': check_device_height_feature,
-			'orientation': check_feature_unimplemented,
+			'orientation': check_orientation_feature,
 			'aspect-ratio': check_feature_unimplemented,
 			'device-aspect-ratio': check_feature_unimplemented,
 			'color': check_feature_unimplemented,
