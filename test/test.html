@@ -203,7 +203,12 @@ module('FoShizzle extensibility');
 test('Media features', function(){
 	FoShizzle.native_support = false;
 	//ok(!FoShizzle('(min-foo:bar)'), '(min-foo:bar) before');
-	ok(FoShizzle.clear_cache().add_feature('foo', function(p,e,t){return true;}).test('(min-foo:bar)'), '(min-foo:bar) after');
+	ok(FoShizzle.clear_cache().add_feature('foo', function(){return true;}).test('(min-foo:bar)'), '(min-foo:bar) after');
+});
+test('Media types', function(){
+	FoShizzle.native_support = false;
+	ok(!FoShizzle.clear_cache().test('tv-3d'), 'tv-3d before');
+	ok(FoShizzle.clear_cache().add_type('tv-3d', function(){return true;}).test('tv-3d'), 'tv-3d after');
 });
 
 	</script>

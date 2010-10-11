@@ -10,8 +10,6 @@
 
 /* TODO:
  * - events?
- * - extensibility:
- *   - implement media type add/replace
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
  * - fully implement check_media_type()
@@ -78,6 +76,20 @@
 			query_parser_cache = {};
 		}
 		
+		return FoShizzle;
+	};
+
+	// Extensibility - add/replace media type
+	FoShizzle.add_type = function(name, f){
+		// Add name to feature RegExp if not exist
+		if(check_media_type_map[name] === undefined){
+			var s = r_media_type.source.split('('),
+					m = r_media_type.global ? 'g' : '';
+			m += r_media_type.ignoreCase ? 'i' : '';
+			r_media_type = new RegExp(s[0] + '(' + name + '|' + s[1], m);
+		}
+		// Add feature test function to map
+		check_media_type_map[name] = f;
 		return FoShizzle;
 	};
 
@@ -211,17 +223,28 @@
 			if(media_type === null || media_type === 'all'){
 				return true;
 			}
-
-			if(media_type === 'handheld' && r_handheld_ua.test(FoShizzle.user_agent)){
-				return true;
-			}
-
-			if(media_type === 'tv' && r_tv_ua.test(FoShizzle.user_agent)){
-				return true;
-			}
-
-			return media_type === 'screen';
+			if(check_media_type_map[media_type]){
+				return check_media_type_map[media_type].call(this, media_type);
+			}	
 		},
+
+		check_screen_type = function(media_type){
+			return true;
+		},
+
+		check_handheld_type = function(media_type){
+			return !!r_handheld_ua.test(FoShizzle.user_agent);
+		},
+
+		check_tv_type = function(media_type){
+			return !!r_tv_ua.test(FoShizzle.user_agent);
+		},
+
+		check_type_unimplemented = function(media_type){
+			//throw(media_type + ' media type detection is not implemented');
+			return false;
+		},
+
 
 		// Test if the device supports the specified media feature
 		check_media_feature = function(prefix, media_feature, expr){			
@@ -355,9 +378,23 @@
 		},
 
 		check_feature_unimplemented = function(p, e, f){
-			throw(f + ' feature detection is not implemented');
+			//throw(f + ' feature detection is not implemented');
+			return false;
 		},
 
+
+		check_media_type_map = {
+			'screen': check_screen_type,
+			'handheld': check_handheld_type,
+			'tv': check_tv_type,
+			'aural': check_type_unimplemented,
+			'braille': check_type_unimplemented,
+			'embossed': check_type_unimplemented,
+			'print': check_type_unimplemented,
+			'projection': check_type_unimplemented,
+			'speech': check_type_unimplemented,
+			'tty': check_type_unimplemented
+		},
 
 		check_feature_map = {
 			'width': check_width_feature,
