@@ -10,6 +10,9 @@
 
 /* TODO:
  * - events?
+ * - Extensibility:
+ *   - Scope new functions to FoShizzle
+ *   - Normalise query & store in private var so new functions can access
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
  * - fully implement check_media_type()
