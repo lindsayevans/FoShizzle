@@ -15,10 +15,10 @@
  *   - allow overriding window, document, screen
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
- * - implement check_media_type()
- * - implement unimplemented feature checks
+ * - fully implement check_media_type()
+ * - test on different devices
  */
-(function(window, document, screen/*, undefined*/){
+(function(window, document, screen){
 
 	var FoShizzle = function(q){
 		return FoShizzle.test(q);
@@ -204,6 +204,7 @@
 		},
 
 		// Test if the device supports the specified media type
+		// TODO: figure out how to detect other devices
 		check_media_type = function(media_type){
 			if(media_type === null || media_type === 'all'){
 				return true;
@@ -388,8 +389,6 @@
 
 		// Check if User Agent string matches known TV devices
 		r_tv_ua = /Wii|PLAYSTATION 3|Xbox|WebTV|MSNTV|MediaCenter/gi
-
-		// TODO: do screen readers etc. expose themselves in the UA string? printers?
 
 	;
 
