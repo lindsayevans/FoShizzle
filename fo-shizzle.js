@@ -12,7 +12,6 @@
  * - events?
  * - extensibility:
  *   - implement media type add/replace
- *   - allow overriding window, document, screen
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
  * - fully implement check_media_type()
@@ -38,11 +37,14 @@
 	// Public properties
 	FoShizzle.debug = false;
 	FoShizzle.native_support = undefined;
-	FoShizzle.user_agent = navigator.userAgent || '';
 	FoShizzle.native_check_query = 'only screen, not screen';
 	FoShizzle.check_id_prefix = 'FoShizzle-';
 	FoShizzle.ignore_unsupported_media_types = true;
 	FoShizzle.ignore_unsupported_media_features = true;
+	FoShizzle.user_agent = navigator.userAgent || '';
+	FoShizzle.window = window;
+	FoShizzle.document = document;
+	FoShizzle.screen = screen;
 
 	// Public methods
 
@@ -261,19 +263,19 @@
 		},
 
 		check_width_feature = function(p, e){
-			return check_number(p, e, window.innerWidth);
+			return check_number(p, e, FoShizzle.window.innerWidth);
 		},
 
 		check_height_feature = function(p, e){
-			return check_number(p, e, window.innerHeight);
+			return check_number(p, e, FoShizzle.window.innerHeight);
 		},
 
 		check_device_width_feature = function(p, e){
-			return check_number(p, e, screen.width);
+			return check_number(p, e, FoShizzle.screen.width);
 		},
 
 		check_device_height_feature = function(p, e){
-			return check_number(p, e, screen.height);
+			return check_number(p, e, FoShizzle.screen.height);
 		},
 
 		check_resolution_feature = function(p, e){
@@ -308,9 +310,9 @@
 				return false;
 			}else if(e === null){
 				return true;
-			}else if(e === 'portrait' && window.innerHeight >= window.innerWidth){
+			}else if(e === 'portrait' && FoShizzle.window.innerHeight >= FoShizzle.window.innerWidth){
 				return true;
-			}else if(e === 'landscape' && window.innerHeight < window.innerWidth){
+			}else if(e === 'landscape' && FoShizzle.window.innerHeight < FoShizzle.window.innerWidth){
 				return true;
 			}
 			return false;
@@ -327,7 +329,7 @@
 			if(ar.length !== 2){
 				return false;
 			}
-			return check_float(p, ar[0] / ar[1], window.innerWidth / window.innerHeight);
+			return check_float(p, ar[0] / ar[1], FoShizzle.window.innerWidth / FoShizzle.window.innerHeight);
 		},
 
 		check_device_aspect_ratio_feature = function(p, e){
@@ -341,15 +343,15 @@
 			if(ar.length !== 2){
 				return false;
 			}
-			return check_float(p, ar[0] / ar[1], screen.width / screen.height);
+			return check_float(p, ar[0] / ar[1], FoShizzle.screen.width / FoShizzle.screen.height);
 		},
 
 		check_color_feature = function(p, e){
-			return check_number(p, e, screen.colorDepth / 8);
+			return check_number(p, e, FoShizzle.screen.colorDepth / 8);
 		},
 
 		check_color_index_feature = function(p, e){
-			return check_number(p, e, Math.pow(2, screen.colorDepth));
+			return check_number(p, e, Math.pow(2, FoShizzle.screen.colorDepth));
 		},
 
 		check_feature_unimplemented = function(p, e, f){
