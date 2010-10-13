@@ -223,12 +223,17 @@
 		// Test if the device supports the specified media type
 		// TODO: figure out how to detect other devices
 		check_media_type = function(media_type){
-			if(media_type === null || media_type === 'all'){
+			if(media_type === null){
 				return true;
 			}
 			if(check_media_type_map[media_type]){
 				return check_media_type_map[media_type].call(this, media_type);
-			}	
+			}
+			return false;
+		},
+
+		check_all_type = function(media_type){
+			return true;
 		},
 
 		check_screen_type = function(media_type){
@@ -387,6 +392,7 @@
 
 
 		check_media_type_map = {
+			'all': check_all_type,
 			'screen': check_screen_type,
 			'handheld': check_handheld_type,
 			'tv': check_tv_type,
