@@ -26,6 +26,10 @@ test('Basic support', function(){
 	equals(FoShizzle('(min-width:50000px)'), false, '(min-width:50000px)');
 	equals(FoShizzle('(max-weight: 3kg)'), false, '(max-weight: 3kg)');
 });
+test('Normaliser', function(){
+	FoShizzle(" (  min-width:	0		)\n\n");
+	equals(FoShizzle.normalised_query, '(min-width:0)', '(min-width:0)');
+});
 
 module('FoShizzle.parse()');
 
@@ -204,6 +208,7 @@ test('Media features', function(){
 	FoShizzle.native_support = false;
 	//ok(!FoShizzle('(min-foo:bar)'), '(min-foo:bar) before');
 	ok(FoShizzle.clear_cache().add_feature('foo', function(){return true;}).test('(min-foo:bar)'), '(min-foo:bar) after');
+	//ok(FoShizzle.clear_cache().set('debug', true).add_feature('foo', function(){log('internal func from extension func');return true;}).test('(min-foo:bar)'), 'Internals access');
 });
 test('Media types', function(){
 	FoShizzle.native_support = false;

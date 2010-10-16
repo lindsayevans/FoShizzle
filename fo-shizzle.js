@@ -11,8 +11,7 @@
 /* TODO:
  * - events?
  * - Extensibility:
- *   - Scope new functions to FoShizzle
- *   - Normalise query & store in private var so new functions can access
+ *   - Refactor so extensibility functions can access internals
  * - handle malformed queries in .parse()
  * - the ignore unsupported features stuff needs to be moved to the test function, as we need to return false as per '3.1. Error Handling'
  * - fully implement check_media_type()
@@ -46,6 +45,7 @@
 	FoShizzle.window = window;
 	FoShizzle.document = document;
 	FoShizzle.screen = screen;
+	FoShizzle.normalised_query = '';
 
 	// Public methods
 
@@ -62,7 +62,13 @@
 
 	// Test if the supplied media query would be applied
 	FoShizzle.test = function(q){
+		q = FoShizzle.normalised_query = FoShizzle.normalise_query(q);
 		return (FoShizzle.check_native_support() ? check_native : check_non_native)(q);
+	};
+
+	// Normalise the query (lowercase, strip whitespace)
+	FoShizzle.normalise_query = function(q){
+		return q.toLowerCase().replace(/[\s]+/g, '');
 	};
 
 	// Check if a query is in the cache
@@ -253,10 +259,9 @@
 			return false;
 		},
 
-
 		// Test if the device supports the specified media feature
-		check_media_feature = function(prefix, media_feature, expr){			
-			return check_feature_map[media_feature].call(this, prefix, expr, media_feature);
+		check_media_feature = function(prefix, media_feature, expr){
+			return check_feature_map[media_feature].call(FoShizzle, prefix, expr, media_feature);
 		},
 
 		check_number = function(p, e, t){
