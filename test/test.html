@@ -28,7 +28,7 @@ test('Basic support', function(){
 });
 test('Normaliser', function(){
 	FoShizzle(" (  min-width:	0		)\n\n");
-	equals(FoShizzle.normalised_query, '(min-width:0)', '(min-width:0)');
+	equals(FoShizzle.normalised_query, ' ( min-width: 0 ) ', ' ( min-width: 0 ) ');
 });
 
 module('FoShizzle.parse()');

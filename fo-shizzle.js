@@ -63,9 +63,9 @@
 		return (FoShizzle.check_native_support() ? check_native : check_non_native)(q);
 	};
 
-	// Normalise the query (lowercase, strip whitespace)
+	// Normalise the query (lowercase, strip extra whitespace)
 	FoShizzle.normalise_query = function(q){
-		return q.toLowerCase().replace(/[\s]+/g, '');
+		return q.toLowerCase().replace(/[\s]+/g, ' ');
 	};
 
 	// Check if a query is in the cache
