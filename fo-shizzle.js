@@ -251,6 +251,15 @@
 			return !!r_tv_ua.test(FoShizzle.user_agent);
 		},
 
+		check_native_type = function(media_type){
+			if(check_native(media_type)){
+				return true;
+			}else{
+				return false;
+			}
+		},
+
+
 		check_type_unimplemented = function(media_type){
 			//throw(media_type + ' media type detection is not implemented');
 			return false;
@@ -398,13 +407,13 @@
 			'screen': check_screen_type,
 			'handheld': check_handheld_type,
 			'tv': check_tv_type,
-			'aural': check_type_unimplemented,
-			'braille': check_type_unimplemented,
-			'embossed': check_type_unimplemented,
-			'print': check_type_unimplemented,
-			'projection': check_type_unimplemented,
-			'speech': check_type_unimplemented,
-			'tty': check_type_unimplemented
+			'aural': check_native_type,
+			'braille': check_native_type,
+			'embossed': check_native_type,
+			'print': check_native_type,
+			'projection': check_native_type,
+			'speech': check_native_type,
+			'tty': check_native_type
 		},
 
 		check_feature_map = {
