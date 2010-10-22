@@ -21,12 +21,14 @@
 
 module('FoShizzle()');
 test('Basic support', function(){
+	expect(4);
 	equals(FoShizzle('(min-width:0)'), true, '(min-width:0)');
 	equals(FoShizzle('not (min-width:0)'), false, 'not (min-width:0)');
 	equals(FoShizzle('(min-width:50000px)'), false, '(min-width:50000px)');
 	equals(FoShizzle('(max-weight: 3kg)'), false, '(max-weight: 3kg)');
 });
 test('Normaliser', function(){
+	expect(1);
 	FoShizzle(" (  min-width:	0		)\n\n");
 	equals(FoShizzle.normalised_query, ' ( min-width: 0 ) ', ' ( min-width: 0 ) ');
 });
@@ -34,11 +36,13 @@ test('Normaliser', function(){
 module('FoShizzle.parse()');
 
 test('Multiple queries', function(){
+	expect(2);
 	same(FoShizzle.parse('only screen, not screen'), [{"query":"only screen","keyword":"only","media_type":"screen","expressions":[]}, {"query":"not screen","keyword":"not","media_type":"screen","expressions":[]}], 'only screen, not screen');
 	same(FoShizzle.parse('screen and (width), not screen and (color)'), [{"query":"screen and (width)","keyword":null,"media_type":"screen","expressions":[{"prefix":null,"media_feature":"width","expr":null}]}, {"query":"not screen and (color)","keyword":"not","media_type":"screen","expressions":[{"prefix":null,"media_feature":"color","expr":null}]}], 'screen and (width), not screen and (color)');
 });
 
 test('Media query types', function(){
+	expect(7);
 	same(FoShizzle.parse(''), [], '[empty string]');
 	same(FoShizzle.parse('screen'), [{"query":"screen","keyword":null,"media_type":"screen","expressions":[]}], 'screen');
 	same(FoShizzle.parse('not screen'), [{"query":"not screen","keyword":"not","media_type":"screen","expressions":[]}], 'not screen');
@@ -49,6 +53,7 @@ test('Media query types', function(){
 });
 
 test('Expression types', function(){
+	expect(4);
 	same(FoShizzle.parse('(width)'), [{"query":"(width)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"width","expr":null}]}], '(width)');
 	same(FoShizzle.parse('(width:0)'), [{"query":"(width:0)","keyword":null,"media_type":null,"expressions":[{"prefix":null,"media_feature":"width","expr":"0"}]}], '(width:0)');
 	same(FoShizzle.parse('(min-width:0)'), [{"query":"(min-width:0)","keyword":null,"media_type":null,"expressions":[{"prefix":"min","media_feature":"width","expr":"0"}]}], '(max-width:0)');
@@ -56,6 +61,7 @@ test('Expression types', function(){
 });
 
 test('Parser caching', function(){
+	expect(4);
 	same(FoShizzle.is_cached('cache'), false, 'not in cache');
 	FoShizzle.parse('cache')
 	same(FoShizzle.is_cached('cache'), true, 'in cache');
@@ -69,6 +75,7 @@ test('Parser caching', function(){
 
 /*
 test('Malformed queries', function(){
+	expect(5);
 	same(FoShizzle.parse('(example, all,), speech'), [], '(example, all,), speech'); // should just be speech
 	same(FoShizzle.parse('&test, screen'), [], '&test, screen'); // should just be screen
 	same(FoShizzle.parse('all and (color) and(width)'), [], 'all and(color)');
@@ -80,6 +87,7 @@ test('Malformed queries', function(){
 
 module('FoShizzle test_non_native');
 test('Media types', function(){
+	expect(14);
 	FoShizzle.native_support = false;
 	ok(FoShizzle('all'), 'all');
 	ok(FoShizzle('screen'), 'screen');
@@ -108,6 +116,7 @@ test('Media types', function(){
 });
 
 test('Media features', function(){
+	expect(62);
 	
 	FoShizzle.native_support = false;
 
@@ -194,12 +203,14 @@ test('Media features', function(){
 
 module('FoShizzle extensibility');
 test('Media features', function(){
+	expect(1);
 	FoShizzle.native_support = false;
 	//ok(!FoShizzle('(min-foo:bar)'), '(min-foo:bar) before');
 	ok(FoShizzle.clear_cache().add_feature('foo', function(){return true;}).test('(min-foo:bar)'), '(min-foo:bar) after');
 	//ok(FoShizzle.clear_cache().set('debug', true).add_feature('foo', function(){log('internal func from extension func');return true;}).test('(min-foo:bar)'), 'Internals access');
 });
 test('Media types', function(){
+	expect(2);
 	FoShizzle.native_support = false;
 	ok(!FoShizzle.clear_cache().test('tv-3d'), 'tv-3d before');
 	ok(FoShizzle.clear_cache().add_type('tv-3d', function(){return true;}).test('tv-3d'), 'tv-3d after');
