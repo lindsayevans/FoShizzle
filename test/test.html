@@ -91,8 +91,11 @@ test('Media types', function(){
 	ok(!FoShizzle('not screen, aural'), 'not screen, aural');
 	ok(FoShizzle('screen, not aural'), 'screen, not aural');
 
-	// Will only pass when printing/previewing
-	//ok(FoShizzle('print'), 'print');
+	// 'print' should only pass when printing/previewing
+	ok(!FoShizzle('print'), 'print');
+//FoShizzle.debug = true;
+//	ok(FoShizzle('print'), 'print');
+//FoShizzle.debug = false;
 
 	FoShizzle.user_agent = 'Nokia6680/1.0 (4.04.07) SymbianOS/8.0 Series60/2.6 Profile/MIDP-2.0 Configuration/CLDC-1.1';
 	ok(FoShizzle('handheld'), 'handheld');

@@ -87,14 +87,14 @@
 
 	// Extensibility - add/replace media type
 	FoShizzle.add_type = function(name, f){
-		// Add name to feature RegExp if not exist
+		// Add name to type RegExp if not exist
 		if(check_media_type_map[name] === undefined){
 			var s = r_media_type.source.split('('),
 					m = r_media_type.global ? 'g' : '';
 			m += r_media_type.ignoreCase ? 'i' : '';
 			r_media_type = new RegExp(s[0] + '(' + name + '|' + s[1], m);
 		}
-		// Add feature test function to map
+		// Add type test function to map
 		check_media_type_map[name] = f;
 		return FoShizzle;
 	};
