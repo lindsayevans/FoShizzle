@@ -15,6 +15,7 @@
  * - handle malformed queries in .parse()
  * - fully implement check_media_type()
  * - test on different devices
+ * - fix IE bugs
  */
 (function(window, document, screen){
 
