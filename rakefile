@@ -71,7 +71,7 @@ namespace :javascript do
 
   def build_options(js_file = nil)
     options = {}
-    options[:force] = false
+    options[:force] = true
     if force = ENV['FORCE']
       options[:force] = (force.to_s == true.to_s)
     end
