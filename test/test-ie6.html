@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>FoShizzle tests</title>
+  <link rel="stylesheet" href="qunit.css">
+</head>
+<body>
+
+	<h1 id="qunit-header">FoShizzle tests</h1>
+	<h2 id="qunit-banner"></h2>
+	<h2 id="qunit-userAgent"></h2>
+	<ol id="qunit-tests"></ol>
+	<div id="qunit-fixture"></div>
+
+	<script src="https://getfirebug.com/firebug-lite.js"></script>
+	<script src="qunit.js"></script>
+	<script src="../fo-shizzle.js"></script>
+	<script>
+
+FoShizzle.debug = true;
+module('FoShizzle()');
+test('Basic support', function(){
+//	equals(FoShizzle('(min-width:0)'), true, '(min-width:0)');
+	equals(FoShizzle('not (min-width:0)'), false, 'not (min-width:0)');
+	equals(FoShizzle('not (min-height:0)'), false, 'not (min-height:0)');
+});
+
+	</script>
+
+</body>
+</html>
+
+

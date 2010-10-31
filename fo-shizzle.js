@@ -130,17 +130,18 @@
 		// Media query list
 		r_media_query_list.lastIndex = 0;
 		while((m_mql = r_media_query_list.exec(q)) !== null){
-
 			// Media query
 			mq = null;
 			r_media_query.lastIndex = 0;
 			while((m_mq = r_media_query.exec(m_mql[1])) !== null){
-				if(m_mq[0] === '' && m_mq[3] === undefined){
+				if(m_mq[0] === '' && m_mq[3] === undefined || m_mq[0] === '' && m_mq[3] === ''){
 					break;
 				}
+
 				if(m_mq[2] !== 'and'){
 					r_media_type.lastIndex = 0;
-					if(m_mq[2] === undefined || r_media_type.exec(m_mq[2]) !== null){
+					r_media_type.lastIndex = 0;
+					if(m_mq[2] === undefined || m_mq[2] === '' || r_media_type.exec(m_mq[2]) !== null){
 						mq = {query: m_mql[1], keyword: m_mq[1] || null, media_type: m_mq[2] || null, expressions: []};
 					}
 				}
@@ -148,6 +149,9 @@
 				// Expression
 				r_expression.lastIndex = 0;
 				r_media_feature.lastIndex = 0;
+				r_expression.lastIndex = 0;
+				r_media_feature.lastIndex = 0;
+
 				if(mq !== null && m_mq[3] && (m_e = r_expression.exec(m_mq[3])) !== null && r_media_feature.exec(m_e[2]) !== null){
 					mq.expressions.push({prefix: m_e[1] || null, media_feature: m_e[2] || null, expr: m_e[3] || null});
 				}
@@ -167,8 +171,14 @@
 	var
 
 		log = function(m){
-			if(FoShizzle.debug && console.log){
+			if(FoShizzle.debug && typeof console !== 'undefined'){
 				console.log(m);
+			}else if(FoShizzle.debug){
+				var k, s = '';
+				for(k in m){
+					s += k + ': '+m[k]+"\n";
+				}
+				alert(s);
 			}
 		},
 
@@ -182,7 +192,11 @@
 					applied = false;
 
 			style.setAttribute('id', FoShizzle.check_id_prefix + 'test-style');
-			style.innerHTML = style_content;
+			try{
+				style.innerHTML = style_content; // failing here with 'Unknown runtime error' in IE6
+			}catch(e){
+				return false;
+			}
 			head.appendChild(style);
 
 			test.setAttribute('id', FoShizzle.check_id_prefix + 'test');
@@ -306,11 +320,36 @@
 		},
 
 		check_width_feature = function(p, e){
-			return check_number(p, e, FoShizzle.window.innerWidth);
+
+			var w = FoShizzle.window.innerWidth;
+
+			if(w === undefined){
+				// IE6, strict mode
+				w = document.documentElement.clientWidth;
+			}
+			if(w === 0){
+				// IE5-7, quirks mode
+				w = document.documentElement.clientWidth;
+			}
+
+			return check_number(p, e, w);
 		},
 
 		check_height_feature = function(p, e){
-			return check_number(p, e, FoShizzle.window.innerHeight);
+
+			var h = FoShizzle.window.innerHeight;
+
+			if(h === undefined){
+				// IE6, strict mode
+				h = document.documentElement.clientHeight;
+			}
+			if(h === 0){
+				// IE5-7, quirks mode
+				h = document.documentElement.clientHeight;
+			}
+
+
+			return check_number(p, e, h);
 		},
 
 		check_device_width_feature = function(p, e){
