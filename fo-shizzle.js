@@ -82,7 +82,7 @@
 		}else{
 			query_parser_cache = {};
 		}
-		
+
 		return FoShizzle;
 	};
 
